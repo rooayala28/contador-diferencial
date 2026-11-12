@@ -493,6 +493,126 @@ body.v-mech.counting .bgfx{display:none}
 .tabbar button[aria-current="page"],.mode-ctl button[aria-pressed="true"]{background:transparent!important;box-shadow:none!important;color:var(--azure)}
 .tabbar button.scrub,.mode-ctl button.scrub{transform:none;background:transparent;color:var(--azure)}
 @media (prefers-reduced-motion:reduce){.thumb{transition:opacity .2s}}
+/* Píldora en todas las barras: cubre el botón completo */
+.thumb{top:0;bottom:auto}
+.seg-ctl,.subtabs{position:relative;isolation:isolate}
+.seg-ctl .thumb,.subtabs .thumb{border-radius:999px}
+.seg-ctl button,.subtabs button{position:relative;z-index:1;transition:color .25s}
+.seg-ctl button[aria-pressed="true"],.subtabs button[aria-selected="true"]{background:transparent!important;box-shadow:none!important;color:var(--azure)}
+.seg-ctl,.subtabs{touch-action:none;user-select:none;-webkit-user-select:none}
+.seg-ctl button.scrub,.subtabs button.scrub{color:var(--azure)}
+.subtabs button b[hidden]{display:none}
+/* ===== PRUEBA: interfaz neutra, toda de cristal esmerilado ===== */
+:root{--bg:#F2F3F6;--azure:#1E222C;--line:#DADDE4;--muted:#626876;--glass-shadow:rgba(18,22,32,.22);--glass-line:rgba(25,30,45,.14)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111216;--azure:#F1F2F6;--line:#2C2F37;--muted:#9EA3AE;--glass-shadow:rgba(0,0,0,.6);--glass-bg:rgba(40,42,50,.42);--glass-line:rgba(0,0,0,.5)}}
+:root[data-theme="dark"]{--bg:#111216;--azure:#F1F2F6;--line:#2C2F37;--muted:#9EA3AE;--glass-shadow:rgba(0,0,0,.6);--glass-bg:rgba(40,42,50,.42)}
+body::before{background:var(--bg)}
+.bgfx{background:
+  linear-gradient(rgba(30,36,50,.06) 1px,transparent 1px) 0 0/22px 22px,
+  linear-gradient(90deg,rgba(30,36,50,.06) 1px,transparent 1px) 0 0/22px 22px,
+  radial-gradient(55% 38% at 8% 4%,rgba(160,178,205,.45),transparent 70%),
+  radial-gradient(45% 32% at 95% 28%,rgba(215,205,200,.45),transparent 70%),
+  radial-gradient(55% 38% at 15% 80%,rgba(175,195,215,.4),transparent 70%),
+  radial-gradient(50% 32% at 90% 97%,rgba(200,205,215,.5),transparent 70%)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bgfx{background:
+  linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px) 0 0/22px 22px,
+  linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px) 0 0/22px 22px,
+  radial-gradient(55% 38% at 8% 4%,rgba(90,110,140,.35),transparent 70%),
+  radial-gradient(50% 32% at 90% 97%,rgba(120,120,135,.3),transparent 70%)}}
+.lz.h{background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),#fff,transparent)}
+.lz.v{background:linear-gradient(180deg,transparent,rgba(255,255,255,.75),#fff,transparent)}
+.lz{filter:drop-shadow(0 0 5px rgba(255,255,255,.95))}
+.btn.primary{background:linear-gradient(180deg,var(--sheen),transparent 60%),var(--glass-bg);color:var(--ink);border:1px solid var(--glass-line);
+  -webkit-backdrop-filter:blur(20px) saturate(190%);backdrop-filter:blur(20px) saturate(190%);
+  box-shadow:inset 0 0 0 1px var(--glass-edge),inset 0 1px 0 var(--glass-hi),0 8px 20px -12px var(--glass-shadow)}
+.bar i,.rcard .bar i{background:linear-gradient(90deg,rgba(30,34,44,.55),rgba(30,34,44,.9))}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bar i{background:linear-gradient(90deg,rgba(255,255,255,.55),#fff)}}
+.seg-ctl button[aria-pressed="true"],.vctl button[aria-pressed="true"],.mode-ctl button[aria-pressed="true"],.subtabs button[aria-selected="true"],.tabbar button[aria-current="page"]{color:var(--ink)}
+.vctl button[aria-pressed="true"]{background:rgba(255,255,255,.55)!important;color:var(--ink)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.85),0 4px 12px -6px var(--glass-shadow)!important}
+.grade button[aria-pressed="true"]{background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,.05)),rgba(28,32,42,.62);color:#fff;text-shadow:0 0 6px rgba(255,255,255,.8);box-shadow:inset 0 0 0 1px rgba(255,255,255,.35),inset 0 1px 0 rgba(255,255,255,.6),0 4px 10px -5px rgba(0,0,0,.35)}
+.chip[aria-pressed="true"]{border-color:var(--glass-line);background:rgba(255,255,255,.6)}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline-color:rgba(30,34,44,.5)}
+.rcampo{color:var(--ink)}
+/* Burbuja de conteo: cristal esmerilado con número blanco brillante */
+body.v-cells .cell .badge{color:#fff;
+  background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,.04) 55%),color-mix(in srgb,var(--g) 32%,rgba(16,18,28,.42));
+  -webkit-backdrop-filter:blur(10px) saturate(190%);backdrop-filter:blur(10px) saturate(190%);
+  border:1px solid rgba(255,255,255,.6);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8),inset 0 -6px 10px -6px rgba(255,255,255,.3),0 6px 14px -6px rgba(0,0,0,.4);
+  text-shadow:0 0 4px #fff,0 0 10px rgba(255,255,255,.9),0 0 16px color-mix(in srgb,var(--g) 80%,#fff)}
+.spcard .vctl{margin-top:0}
+.spcard .vctl button{padding:8px 12px;font-size:14px}
+.rbigkey{width:100%;min-height:190px;justify-content:center;gap:4px;margin:4px 0 10px}
+.rbigkey .rk-ico svg{width:74px;height:74px}
+.rbigkey .rk-n{font-size:52px}
+.rbigkey:disabled,.rbigkey.deny{animation:deny .38s ease-in-out}
+.rdots{display:flex;gap:14px;margin-top:12px}
+.rdots .grp{display:flex;gap:5px}
+.rdots i{width:13px;height:13px;border-radius:50%;border:1.5px solid var(--glass-line);background:rgba(255,255,255,.35)}
+.rdots i.on{background:var(--ink);border-color:var(--ink);opacity:.75}
+.rdots i.cur{border-color:var(--ink);box-shadow:0 0 0 3px rgba(255,255,255,.7),0 0 8px rgba(30,34,44,.35);animation:dotp 1.6s ease-in-out infinite}
+@keyframes dotp{50%{transform:scale(1.2)}}
+#rtNext:disabled{opacity:.45}
+/* Píldoras en grados y selectores */
+.grade.hasthumb,.vctl.hasthumb{position:relative;isolation:isolate}
+.grade.hasthumb button,.vctl.hasthumb button{position:relative;z-index:1;transition:color .25s,text-shadow .25s}
+.grade.hasthumb button[aria-pressed="true"]{background:transparent!important;box-shadow:none!important;color:#fff;text-shadow:0 0 6px rgba(255,255,255,.9)}
+.vctl.hasthumb button[aria-pressed="true"]{background:transparent!important;box-shadow:none!important;color:var(--ink)!important}
+.vctl .thumb,.grade .thumb{border-radius:999px}
+.gthumb{background:linear-gradient(180deg,rgba(255,255,255,.32),rgba(255,255,255,.04)),rgba(28,32,42,.64);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.35),inset 0 1px 0 rgba(255,255,255,.6),0 5px 12px -5px rgba(0,0,0,.4);
+  -webkit-backdrop-filter:blur(6px) saturate(170%);backdrop-filter:blur(6px) saturate(170%)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .gthumb{background:linear-gradient(180deg,rgba(255,255,255,.3),rgba(255,255,255,.06)),rgba(255,255,255,.14)}}
+.vctl{touch-action:none;user-select:none;-webkit-user-select:none}
+/* Últimos ajustes: sin luces fijas, encabezado en piezas, número rodante, retis */
+body.counting{background:var(--bg)}
+body.v-cells .cell .art{filter:none}
+#v-count .head.glass{background:none;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0;isolation:auto}
+#v-count .head.glass::before{display:none}
+#v-count .head{column-gap:8px;row-gap:8px;align-items:stretch}
+.head .big,.head .wbcbox,.head .prog{
+  background:linear-gradient(180deg,var(--sheen),transparent 60%),var(--glass-bg);
+  -webkit-backdrop-filter:blur(22px) saturate(190%);backdrop-filter:blur(22px) saturate(190%);
+  border:1px solid var(--glass-line);box-shadow:inset 0 0 0 1px var(--glass-edge),inset 0 1px 0 var(--glass-hi),0 10px 24px -14px var(--glass-shadow)}
+.head .big{display:flex;align-items:center;justify-content:center;min-width:96px;padding:6px 18px;border-radius:999px;font-size:44px;line-height:1}
+.head .wbcbox{border-radius:999px;padding:7px 18px}
+.head .wbcbox.empty{border:1.5px dashed rgba(30,34,44,.35)}
+.head .seg-ctl{align-self:center}
+.head .prog{border-radius:999px;padding:10px 16px}
+.big .dg{display:inline-block;position:relative;width:.6em;height:1.02em;overflow:hidden;vertical-align:bottom}
+.big .dg b{position:absolute;left:0;right:0;top:0;text-align:center;font-weight:700}
+.big .in-down{animation:bInDown .42s cubic-bezier(.2,1.25,.4,1)}
+.big .out-down{animation:bOutDown .42s cubic-bezier(.4,0,.6,1) forwards}
+.big .in-up{animation:bInUp .42s cubic-bezier(.2,1.25,.4,1)}
+.big .out-up{animation:bOutUp .42s cubic-bezier(.4,0,.6,1) forwards}
+@keyframes bInDown{from{transform:translateY(-105%);opacity:.15;filter:blur(1.5px)}to{transform:none;opacity:1;filter:none}}
+@keyframes bOutDown{to{transform:translateY(105%);opacity:0;filter:blur(1.5px)}}
+@keyframes bInUp{from{transform:translateY(105%);opacity:.15;filter:blur(1.5px)}to{transform:none;opacity:1;filter:none}}
+@keyframes bOutUp{to{transform:translateY(-105%);opacity:0;filter:blur(1.5px)}}
+@media (prefers-reduced-motion:reduce){.big .dg b{animation:none!important}}
+.head .seg-ctl .thumb{background:linear-gradient(180deg,#fff,rgba(255,255,255,.75));box-shadow:inset 0 0 0 1px #fff,0 0 14px 3px rgba(255,255,255,.95),0 0 4px #fff,0 4px 10px -4px var(--glass-shadow)}
+.head .seg-ctl button[aria-pressed="true"]{color:var(--ink)!important;text-shadow:0 0 8px #fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .head .seg-ctl button[aria-pressed="true"]{color:#14161c!important}}
+.tabbar{border-radius:999px;padding:6px}
+.tabbar .thumb{border-radius:999px}
+.topbar{border-radius:999px}
+.rinputs{grid-template-columns:1fr}
+.rbigkey{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;min-height:230px;margin:4px 0 10px;
+  background:transparent;border:0;cursor:pointer;color:var(--ink);touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.rbigkey .rk-name{font-weight:700;font-size:15px;margin-bottom:2px}
+.rbigkey .rk-art{width:170px;height:170px;transition:transform .28s cubic-bezier(.3,1.6,.5,1);position:relative;z-index:1;pointer-events:none}
+.rbigkey:active .rk-art{transform:scale(.9);transition-duration:.06s}
+.rbigkey .rk-l{font-size:13px;color:var(--muted);font-weight:700}
+.rbigkey::before{content:"";position:absolute;left:50%;top:50%;width:230px;height:230px;margin:-122px 0 0 -115px;border-radius:50%;z-index:0;opacity:0;pointer-events:none;
+  background:radial-gradient(circle,color-mix(in srgb,var(--g) 60%,transparent) 0%,color-mix(in srgb,var(--g) 18%,transparent) 45%,transparent 70%)}
+.rbigkey.flash::before{animation:rGlow .8s linear}
+@keyframes rGlow{0%{opacity:0;transform:scale(.9)}14%{opacity:1;transform:scale(1.05)}26%{opacity:.5}34%{opacity:.85}100%{opacity:0;transform:scale(1.12)}}
+.rbigkey .rk-badge{position:absolute;z-index:2;left:calc(50% + 50px);top:46px;min-width:34px;height:34px;padding:0 10px;border-radius:17px;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:19px;color:#fff;
+  background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,.04) 55%),color-mix(in srgb,var(--g) 32%,rgba(16,18,28,.42));
+  -webkit-backdrop-filter:blur(10px) saturate(190%);backdrop-filter:blur(10px) saturate(190%);border:1px solid rgba(255,255,255,.6);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 6px 14px -6px rgba(0,0,0,.4);text-shadow:0 0 4px #fff,0 0 10px rgba(255,255,255,.9)}
+.rbigkey.deny{animation:deny .38s ease-in-out}
 /* Brillo único por célula al tocar */
 .cell .ripple{position:absolute;border-radius:50%;pointer-events:none;z-index:0;
   background:radial-gradient(circle,color-mix(in srgb,var(--g) 75%,transparent) 0%,color-mix(in srgb,var(--g) 32%,transparent) 38%,transparent 68%)}
@@ -552,20 +672,14 @@ body.v-mech.counting .bgfx{display:none}
   </div>
   <div class="rpanel" id="rpanel">
     <div class="rcard glass">
-      <div class="rtop"><div class="rbig" id="rtN">0<small> / 1000 eritrocitos</small></div><div class="rcampo" id="rtCampo">Campo 1</div></div>
-      <div class="bar" id="rtBar"><i></i></div>
+      <div class="rtop"><div class="rbig" id="rtN">0<small> retis</small></div><div class="rcampo" id="rtCampo">Ronda 1 · Campo 1 de 5</div></div>
+      <div class="rdots" id="rtDots"></div>
       <div class="rstats" id="rtStats">Sin conteo todavía</div>
     </div>
     <div class="rinputs">
       <label class="wbcbox"><span>Eritrocitos ×10¹²/L</span><input id="rtRbc" inputmode="decimal" autocomplete="off" placeholder="—"></label>
-      <label class="wbcbox"><span>Hematocrito %</span><input id="rtHct" inputmode="decimal" autocomplete="off" placeholder="—"></label>
     </div>
-    <div class="rkeys" id="rkeys">
-      <button class="rkey" type="button" data-rk="agg" style="--g:#2E9BF0"><span class="rk-ico" id="rkAggI"></span><span class="rk-n" id="rkAgg">0</span><span class="rk-l" id="rkAggL">Reticulocito</span></button>
-      <button class="rkey" type="button" data-rk="punt" id="rkPuntB" style="--g:#A66BFF"><span class="rk-ico" id="rkPuntI"></span><span class="rk-n" id="rkPunt">0</span><span class="rk-l">Punteado</span></button>
-      <button class="rkey" type="button" data-rk="mat" style="--g:#E8806E"><span class="rk-ico" id="rkMatI"></span><span class="rk-n" id="rkMat">0</span><span class="rk-l">Eritrocito maduro</span></button>
-    </div>
-    <label class="sh-lab rmat">Maduros en este campo (puedes escribirlo)<input id="rtMat" type="number" inputmode="numeric" min="0" enterkeyhint="done"></label>
+    <button class="rbigkey" id="rtTap" type="button" style="--g:#2E9BF0"><span class="rk-name">Reticulocito</span><img class="rk-art" id="rtArt" alt="" draggable="false"><span class="rk-badge" id="rkCur">0</span><span class="rk-l" id="rkLabel">Reticulocitos en este campo</span></button>
     <div class="row"><button class="btn" id="rtUndo" type="button">Deshacer</button><button class="btn primary" id="rtNext" type="button">Siguiente campo</button></div>
     <p class="note" id="rtHint"></p>
   </div>
@@ -648,7 +762,7 @@ body.v-mech.counting .bgfx{display:none}
       <h1>Parásitos</h1>
       <button class="btn icon" id="toSet3" type="button" aria-label="Ajustes"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
     </div>
-    <div class="spcard glass"><span>Especie: <strong id="paraSp">Canino</strong></span><button class="btn" id="paraChg" type="button">Cambiar</button></div>
+    <div class="spcard glass"><span>Especie</span><div class="vctl" id="paraEsp" role="group" aria-label="Especie"><button type="button" data-v="Canino">Canino</button><button type="button" data-v="Felino">Felino</button><button type="button" data-v="Humano">Humano</button></div></div>
     <p class="note">Incluye bacterias hemotrópicas y rickettsias. Marca la cantidad observada; toca otra vez para quitarla. La lista cambia según la especie.</p>
     <div class="chips" style="margin:10px 0 4px"><button class="chip" id="pnone" type="button">Sin hemoparásitos observados</button></div>
     <div id="paras"></div>
@@ -671,7 +785,7 @@ body.v-mech.counting .bgfx{display:none}
     <div class="setrow" id="unitsRow"></div>
     <h2>Al empezar un conteo nuevo</h2>
     <div class="setrow"><div><strong>Meta</strong></div><div class="vctl" id="setMeta" role="group" aria-label="Meta predeterminada"><button type="button" data-v="100">100</button><button type="button" data-v="200">200</button></div></div>
-    <div class="setrow"><div><strong>Valores absolutos</strong><span>Cómo se muestran en Resultado, el reporte y el CSV. El WBC del equipo se sigue anotando en ×10⁹/L.</span></div><div class="vctl" id="setUnits" role="group" aria-label="Unidades de los absolutos"><button type="button" data-v="si">×10⁹/L</button><button type="button" data-v="ul">cél/µL</button></div></div>
+    <div class="setrow"><div><strong>Valores absolutos</strong><span>Cómo se muestran en Resultado, el reporte y el CSV. El WBC del equipo se sigue anotando en ×10⁹/L.</span></div><div class="vctl" id="setUnits" role="group" aria-label="Unidades de los absolutos"><button type="button" data-v="si">×10⁹/L</button><button type="button" data-v="ul">×10³/µL</button></div></div>
     <div class="setrow"><div><strong>Especie</strong></div><div class="vctl" id="setEsp" role="group" aria-label="Especie predeterminada"><button type="button" data-v="Canino">Canino</button><button type="button" data-v="Felino">Felino</button><button type="button" data-v="Humano">Humano</button></div></div>
 
     <h2>Vista del conteo</h2>
@@ -772,10 +886,10 @@ const SPECIES=["Canino","Felino","Humano"];
 let AJ={sound:true,silent:false,vib:true,meta:100,especie:"Canino",units:"si"};
 try{AJ=Object.assign(AJ,JSON.parse(localStorage.getItem("contador-ajustes")||"{}"));}catch(e){}
 function saveAJ(){try{localStorage.setItem("contador-ajustes",JSON.stringify(AJ));}catch(e){}}
-const absU=()=>AJ.units==="ul"?"/µL":"×10⁹/L";
-function absStr(x,dec=2){if(!Number.isFinite(x))return "—";return AJ.units==="ul"?Math.round(x*1000).toLocaleString("es-MX")+" /µL":x.toFixed(dec)+" ×10⁹/L";}
-function absNum(x,dec=2){if(!Number.isFinite(x))return "—";return AJ.units==="ul"?Math.round(x*1000).toLocaleString("es-MX"):x.toFixed(dec);}
-const RT0=()=>({fields:[],cur:{mat:0,agg:0,punt:0},rbc:"",hct:"",hist:[]});
+const absU=()=>AJ.units==="ul"?"×10³/µL":"×10⁹/L";
+function absStr(x,dec=2){if(!Number.isFinite(x))return "—";return AJ.units==="ul"?x.toFixed(1)+" ×10³/µL":x.toFixed(dec)+" ×10⁹/L";}
+function absNum(x,dec=2){if(!Number.isFinite(x))return "—";return AJ.units==="ul"?x.toFixed(1):x.toFixed(dec);}
+const RT0=()=>({v:2,fields:[],cur:0,rbc:"",hct:"",hist:[]});
 const newSid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 let S={sid:newSid(),inicio:null,paciente:"",especie:AJ.especie,wbc:"",meta:AJ.meta,counts:{},hist:[],morf:[],mo:{},notas:"",paras:{},parasNone:false,interp:"",interpOn:false,rt:RT0()};
 try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw));}catch(e){}
@@ -784,7 +898,7 @@ if(!S.paras||typeof S.paras!=="object")S.paras={};
 if(!S.mo||typeof S.mo!=="object")S.mo={};
 if(Array.isArray(S.morf)&&S.morf.length){S.morf.forEach(m=>{if(LEGACY[m]&&!S.mo[LEGACY[m]])S.mo[LEGACY[m]]=1;});S.morf=[];}
 if(!S.sid)S.sid=newSid();
-if(!S.rt||!S.rt.cur)S.rt=RT0();
+if(!S.rt||S.rt.v!==2)S.rt=Object.assign(RT0(),S.rt&&{rbc:S.rt.rbc||"",hct:S.rt.hct||""});
 if(!SPECIES.includes(S.especie))S.especie=AJ.especie;
 const HKEY="contador-diferencial-historial";
 let H=[];
@@ -1114,7 +1228,15 @@ function renderMorph(){
   const mo=S.mo||{};
   const nMarked=gp=>gp.items.filter(it=>mo[it.k]).length;
   const tabs=MORPH.map(gp=>({id:gp.g,label:{Eritrocitos:"Serie roja",Leucocitos:"Serie blanca",Plaquetas:"Plaquetas"}[gp.g]||gp.g,n:nMarked(gp)})).concat([{id:"Notas",label:"Notas",n:S.notas.trim()?1:0}]);
-  $("msub").innerHTML=tabs.map(t=>`<button type="button" role="tab" data-mg="${t.id}" aria-selected="${t.id===MGROUP}">${t.label}${t.n?`<b>${t.id==="Notas"?"•":t.n}</b>`:""}</button>`).join("");
+  const ms=$("msub");
+  if(!ms.dataset.built){
+    ms.innerHTML=tabs.map(t=>`<button type="button" role="tab" data-mg="${t.id}"><span>${t.label}</span><b hidden></b></button>`).join("");
+    ms.dataset.built="1";
+    window.subPlace=makeThumb(ms,"button[data-mg]",b=>b.getAttribute("aria-selected")==="true");
+    scrubBar(ms,"button[data-mg]",b=>{MGROUP=b.dataset.mg;renderMorph();$("mpanel").scrollTop=0;});
+  }
+  tabs.forEach(t=>{const b=ms.querySelector(`button[data-mg="${t.id}"]`);b.setAttribute("aria-selected",String(t.id===MGROUP));const badge=b.querySelector("b");badge.hidden=!t.n;badge.textContent=t.id==="Notas"?"•":t.n;});
+  if(window.subPlace)setTimeout(window.subPlace,0);
   $("notas").hidden=MGROUP!=="Notas";
   $("morph").innerHTML=MGROUP==="Notas"?`<p class="note">Notas generales del frotis; pasan al final del reporte.</p>`:MORPH.filter(gp=>gp.g===MGROUP).map(gp=>`<p class="note">Marca el grado observado; toca otra vez para quitarlo.</p>`+gp.items.filter(it=>!it.sp||it.sp.includes(S.especie)||mo[it.k]).map(it=>{
     const v=mo[it.k];
@@ -1124,6 +1246,7 @@ function renderMorph(){
     const conf=it.conf&&v?`<div class="mconf"><button class="chip" type="button" data-conf="1" aria-pressed="${!!mo.aglutConf}">Confirmada con dilución salina</button></div>`:"";
     return `<div class="pz${v?" on":""}"><span class="ico">${ICONS[it.k]||""}</span><div class="pz-name">${it.n}<span class="sub">${it.s}</span></div>${ctl}</div>${conf}`;
   }).join("")).join("");
+  gradeThumbs($("morph"));
 }
 $("msub").addEventListener("click",e=>{const b=e.target.closest("button[data-mg]");if(!b)return;MGROUP=b.dataset.mg;renderMorph();$("mpanel").scrollTop=0;});
 $("morph").addEventListener("click",e=>{
@@ -1180,21 +1303,22 @@ const SPRITES=[];
     }).catch(()=>{});
   });
 })();
-function celebrate(){
+function celebrate(list){
+  const SP=(list&&list.length)?list:SPRITES;
   const big=$("big");big.classList.remove("pop");void big.offsetWidth;big.classList.add("pop");
   if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;
-  if(!SPRITES.length)return;
+  if(!SP.length)return;
   const dpr=Math.min(window.devicePixelRatio||1,3),W=innerWidth,H=innerHeight;
   const cv=document.createElement("canvas");cv.className="fx";cv.width=W*dpr;cv.height=H*dpr;
   document.body.appendChild(cv);
   const ctx=cv.getContext("2d");ctx.scale(dpr,dpr);
-  const box=$("cells").getBoundingClientRect(),ox=box.left+box.width/2,oy=box.top+box.height*.45;
+  const box=((typeof MODE!=="undefined"&&MODE==="retis")?$("rtTap"):$("cells")).getBoundingClientRect(),ox=box.left+box.width/2,oy=box.top+box.height*.45;
   const P=[],N=42;
   for(let i=0;i<N;i++){
     const up=i<N*.75;
     const a=up?(-Math.PI/2+(Math.random()-.5)*Math.PI*1.25):Math.random()*Math.PI*2;
     const sp=(up?750:450)+Math.random()*700;
-    P.push({img:SPRITES[i%SPRITES.length],x:ox+(Math.random()-.5)*30,y:oy+(Math.random()-.5)*30,
+    P.push({img:SP[i%SP.length],x:ox+(Math.random()-.5)*30,y:oy+(Math.random()-.5)*30,
       vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,rot:Math.random()*Math.PI*2,vr:(Math.random()-.5)*9,
       size:36+Math.random()*40,delay:Math.random()*.12,life:1.7+Math.random()*.8,age:0});
   }
@@ -1265,7 +1389,7 @@ function playEgg(s){
   setTimeout(()=>{eggPlaying=false;render();},t*1000+400);
 }
 function undo(){const id=S.hist.pop();if(!id)return;if(typeof VISTA!=="undefined"&&VISTA==="mech")clack(.65);else{pluck(523.25,0,.14,.11);pluck(392,.07,.22,.11);}buzz([10,30,10]);glow($("undo"));S.counts[id]--;save();render();}
-const hasData=(st=S)=>total(st)>0||(st.counts.nrbc||0)>0||!!st.paciente||!!st.notas.trim()||(st.morf||[]).length>0||Object.keys(st.mo||{}).length>0||Object.keys(st.paras).length>0||st.parasNone||rtTot(st).n>0;
+const hasData=(st=S)=>total(st)>0||(st.counts.nrbc||0)>0||!!st.paciente||!!st.notas.trim()||(st.morf||[]).length>0||Object.keys(st.mo||{}).length>0||Object.keys(st.paras).length>0||st.parasNone||rtCalc(st).has;
 function archive(){
   if(!hasData())return false;
   const rec=JSON.parse(JSON.stringify(S));delete rec.hist;
@@ -1320,12 +1444,57 @@ function parasList(){
 function renderParas(){
   $("paras").innerHTML=parasList().map(p=>{const g=S.paras[p[0]]||0;
     return `<div class="pz${g?" on":""}"><span class="ico">${ICONS[p[0]]||ICONS["Otro hemoparásito"]}</span><div class="pz-name">${p[1]}<span class="sub">${p[2]}</span></div><div class="grade" role="group" aria-label="Cantidad de ${p[0]}">${[1,2,3].map(i=>`<button type="button" data-p="${p[0]}" data-g="${i}" aria-pressed="${g===i}" aria-label="${GR[i]}">${"+".repeat(i)}</button>`).join("")}</div></div>`;}).join("");
+  gradeThumbs($("paras"));
   $("pnone").setAttribute("aria-pressed",String(!!S.parasNone&&!Object.keys(S.paras).length));
 }
 
+/* Píldora animada en los botones de grado: viaja entre +, ++, +++ y se desvanece al deseleccionar */
+const GPREV={};
+function gradeThumbs(root){
+  root.querySelectorAll(".grade").forEach(g=>{
+    const btns=[...g.querySelectorAll("button")];if(!btns.length)return;
+    const key=btns[0].dataset.m||btns[0].dataset.p;
+    g.classList.add("hasthumb");
+    const th=document.createElement("span");th.className="thumb gthumb";th.setAttribute("aria-hidden","true");g.prepend(th);
+    const sel=btns.find(b=>b.getAttribute("aria-pressed")==="true");
+    const visible=g.offsetParent!==null;
+    const geo=b=>({x:b.offsetLeft,y:b.offsetTop,w:b.offsetWidth,h:b.offsetHeight});
+    const put=(q,op)=>{th.style.width=q.w+"px";th.style.height=q.h+"px";th.style.top=q.y+"px";th.style.transform=`translateX(${q.x}px)`;th.style.opacity=op;};
+    const target=sel&&visible?geo(sel):null,prev=GPREV[key];
+    if(!visible){if(sel){th.style.transition="none";th.style.opacity=0;}return;}
+    th.style.transition="none";
+    if(prev){put(prev,1);}else if(target){put(target,0);}else{th.style.opacity=0;}
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{th.style.transition="";if(target)put(target,1);else th.style.opacity=0;}));
+    GPREV[key]=target;
+  });
+}
+/* Píldora y deslizamiento en los selectores de opciones (especie, meta, unidades, vista…) */
+function setupVctls(){
+  document.querySelectorAll(".vctl").forEach(v=>{
+    if(v.dataset.thumb)return;v.dataset.thumb="1";v.classList.add("hasthumb");
+    const place=makeThumb(v,"button[data-v]",b=>b.getAttribute("aria-pressed")==="true");
+    new MutationObserver(()=>place()).observe(v,{subtree:true,attributes:true,attributeFilter:["aria-pressed"]});
+    scrubBar(v,"button[data-v]",b=>{delete v.dataset.skip;b.click();});
+  });
+}
+/* Número del conteo que rueda como reloj mecánico digital: 01, 02, 03… */
+let BIGPREV="";
+function renderBig(t){
+  const s=String(t).padStart(2,"0"),el=$("big");
+  if(el.dataset.len!==String(s.length)){el.dataset.len=String(s.length);el.innerHTML=[...s].map(d=>`<span class="dg"><b>${d}</b></span>`).join("");BIGPREV=s;return;}
+  [...s].forEach((d,i)=>{
+    if(BIGPREV[i]===d)return;
+    const slot=el.children[i];while(slot.children.length>1)slot.firstElementChild.remove();
+    const old=slot.lastElementChild,nb=document.createElement("b");nb.textContent=d;
+    const up=+d<+(BIGPREV[i]||0)&&!(BIGPREV[i]==="9"&&d==="0");
+    nb.className=up?"in-up":"in-down";if(old)old.className=up?"out-up":"out-down";
+    slot.appendChild(nb);setTimeout(()=>{if(old&&old.parentNode)old.remove();},420);
+  });
+  BIGPREV=s;
+}
 function render(){
   const {t,wbc,nrbc100,wbcCorr}=calc();
-  $("big").innerHTML=`${t}<small> / ${S.meta}</small>`;
+  renderBig(t);
   const done=t>=S.meta;
   $("bar").classList.toggle("done",done);
   $("bar").firstElementChild.style.width=Math.min(100,t/S.meta*100)+"%";
@@ -1336,9 +1505,10 @@ function render(){
   if(document.activeElement!==w2)w2.value=S.wbc||"";
   $("wbcbox").classList.toggle("empty",!String(S.wbc||"").trim());
   $("tabRes").classList.toggle("ready",done);
-  $("paraSp").textContent=S.especie;
+  document.querySelectorAll("#paraEsp button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===S.especie)));
   renderRetis();
   document.querySelectorAll(".seg-ctl button").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.meta===S.meta)));
+  if(typeof segPlace==="function")setTimeout(segPlace,0);
 
   let rows="";
   CELLS.forEach(c=>{
@@ -1416,6 +1586,7 @@ function showView(){
   document.querySelectorAll("#tabbar button").forEach(b=>{if(b.dataset.tab===tab)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
   if(v!=="count")window.scrollTo(0,0);
   if(v==="hist")renderHist();
+  if(v==="para"||v==="set")setTimeout(render,0);
 }
 const fdate=t=>new Date(t).toLocaleString("es-MX",{dateStyle:"medium",timeStyle:"short"});
 function renderHist(){
@@ -1427,7 +1598,7 @@ function csvAll(){
   const q=v=>`"${String(v??"").replace(/"/g,'""')}"`;
   const cols=["Fecha","Paciente","Especie","Células","WBC equipo","WBC corregido","nRBC (n)","nRBC/100"];
   CELLS.filter(c=>c.id!=="nrbc").forEach(c=>cols.push(LONG[c.id]+" (n)",LONG[c.id]+" %",LONG[c.id]+" "+absU()));
-  cols.push("Eritrocitos contados (retis)","Reticulocitos (n)","Retis %","Retis "+absU(),"Retis corregido %","IPR","Punteados (n)","Punteados %","Morfología","Hemoparásitos","Notas");
+  cols.push("Retis campos","Retis contados (n)","Retis por 1000 eritrocitos","Retis %","Retis "+absU(),"Retis corregido %","IPR","Morfología","Hemoparásitos","Notas");
   const rows=[cols.map(q).join(",")];
   H.forEach(r=>{
     const {t,wbc,nrbc100,wbcCorr}=calc(r);
@@ -1435,7 +1606,7 @@ function csvAll(){
     CELLS.filter(c=>c.id!=="nrbc").forEach(c=>{const p=t?(r.counts[c.id]||0)*100/t:NaN;v.push(r.counts[c.id]||0,Number.isFinite(p)?p.toFixed(1):"",Number.isFinite(p)&&Number.isFinite(wbcCorr)?absNum(p*wbcCorr/100).replace(/,/g,""):"");});
     const pk=Object.keys(r.paras||{});
     const rc=rtCalc(r),f1=x=>Number.isFinite(x)?x.toFixed(1):"";
-    v.push(rc.n||"",rc.n?rc.agg:"",rc.n?f1(rc.pA):"",rc.n&&Number.isFinite(rc.absA)?absNum(rc.absA,1).replace(/,/g,""):"",rc.n?f1(rc.corr):"",Number.isFinite(rc.ipr)?rc.ipr.toFixed(2):"",r.especie==="Felino"&&rc.n?rc.punt:"",r.especie==="Felino"&&rc.n?f1(rc.pP):"");
+    v.push(rc.has?rc.campos:"",rc.has?rc.R:"",rc.has?f1(rc.per1000):"",rc.has?f1(rc.pct):"",rc.has&&Number.isFinite(rc.abs)?absNum(rc.abs,1).replace(/,/g,""):"",rc.has?f1(rc.corr):"",Number.isFinite(rc.ipr)?rc.ipr.toFixed(2):"");
     v.push(morphText(r),pk.length?pk.map(k=>`${k} (${GR[r.paras[k]]})`).join("; "):(r.parasNone?"No observados":""),r.notas||"");
     rows.push(v.map(q).join(","));
   });
@@ -1448,10 +1619,16 @@ async function copyText(txt,msgEl,ta){
 }
 window.addEventListener("hashchange",showView);
 $("tabbar").addEventListener("click",e=>{const b=e.target.closest("button[data-tab]");if(b)location.hash=b.dataset.tab;});
-$("paraChg").addEventListener("click",()=>{location.hash="resultado";setTimeout(()=>{$("especie").focus();},150);});
+$("paraEsp").addEventListener("click",e=>{const b=e.target.closest("button[data-v]");if(!b||b.dataset.v===S.especie)return;S.especie=b.dataset.v;$("especie").value=S.especie;save();render();});
+/* Las animaciones de aviso y de toque se limpian al terminar, para que no se repitan al volver a la pestaña */
+document.addEventListener("animationend",e=>{
+  const el=e.target.closest&&e.target.closest(".cell,.undo-cell,.rkey,.rbigkey,.wbcbox");if(!el)return;
+  if(e.animationName==="deny")el.classList.remove("deny");
+  else if(["glowpulse","keyp","backlit","rGlow"].includes(e.animationName))el.classList.remove("flash");
+});
 /* Modos de la pantalla de conteo */
 let MODE="conteo";
-function setMode(m){MODE=m;if(typeof modePlace==="function")setTimeout(modePlace,0);$("v-count").dataset.mode=m;document.querySelectorAll(".mode-ctl button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mode===m)));}
+function setMode(m){MODE=m;setTimeout(()=>{if(typeof render==="function")render();},0);if(typeof modePlace==="function")setTimeout(modePlace,0);$("v-count").dataset.mode=m;document.querySelectorAll(".mode-ctl button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mode===m)));}
 document.querySelector(".mode-ctl").addEventListener("click",e=>{const b=e.target.closest("button[data-mode]");if(b)setMode(b.dataset.mode);});
 setMode("conteo");
 $("saveH").addEventListener("click",()=>{const ok=archive();$("copymsg").textContent=ok?"Guardado en historial.":(hasData()?"No se pudo guardar.":"No hay datos que guardar.");renderHist();});
@@ -1464,7 +1641,7 @@ $("hlist").addEventListener("click",e=>{
   if(b.dataset.load!==undefined){
     const r=H[+b.dataset.load];archive();
     S=Object.assign(JSON.parse(JSON.stringify(r)),{hist:[]});
-    if(!S.rt||!S.rt.cur)S.rt=RT0();
+    if(!S.rt||S.rt.v!==2)S.rt=RT0();
     if(!S.mo)S.mo={};
     if(Array.isArray(S.morf)&&S.morf.length){S.morf.forEach(m=>{if(LEGACY[m]&&!S.mo[LEGACY[m]])S.mo[LEGACY[m]]=1;});S.morf=[];}delete S.guardado;
     CELLS.forEach(c=>{if(typeof S.counts[c.id]!=="number")S.counts[c.id]=0;});
@@ -1686,92 +1863,122 @@ $("shClear").addEventListener("click",()=>armTap($("shClear"),"Borrar conteo","�
 $("shCancel").addEventListener("click",closeSheet);
 $("sheet").addEventListener("click",e=>{if(e.target===$("sheet"))closeSheet();});
 
-/* Reticulocitos por campo */
+/* Reticulocitos: 3 rondas de 5 campos (15 campos). Total ÷ 3 = retis por cada 1000 eritrocitos */
 const HCTN={Canino:45,Felino:37,Humano:45};
-function rtTot(st=S){
-  const r=(st.rt&&st.rt.cur)?st.rt:RT0();
-  const s={mat:0,agg:0,punt:0};
-  [...r.fields,r.cur].forEach(x=>{s.mat+=x.mat||0;s.agg+=x.agg||0;s.punt+=x.punt||0;});
-  s.n=s.mat+s.agg+s.punt;
-  const curUsed=(r.cur.mat||r.cur.agg||r.cur.punt)?1:0;
-  s.campos=r.fields.length+curUsed;s.campoAct=r.fields.length+1;
-  return s;
-}
+const RT_F=15,RT_R=5;
 function rtCalc(st=S){
-  const t=rtTot(st),num=v=>parseFloat(String(v??"").replace(",","."));
-  const rbc=num(st.rt&&st.rt.rbc),hct=num(st.rt&&st.rt.hct);
-  const pA=t.n?t.agg*100/t.n:NaN,pP=t.n?t.punt*100/t.n:NaN;
-  const absA=Number.isFinite(rbc)&&t.n?pA/100*rbc*1000:NaN,absP=Number.isFinite(rbc)&&t.n?pP/100*rbc*1000:NaN;
-  const hn=HCTN[st.especie]||45,corr=Number.isFinite(hct)&&t.n?pA*hct/hn:NaN;
+  const r=st.rt||RT0(),num=v=>parseFloat(String(v??"").replace(",","."));
+  const rbc=num(r.rbc),hct=num(r.hct),hn=HCTN[st.especie]||45;
+  let R=0,campos=0,done=false,per1000=NaN,rounds=[],legacy=false,punt=0;
+  if(r.v===2){
+    const f=r.fields||[],cur=r.cur||0;
+    R=f.reduce((x,y)=>x+y,0)+cur;
+    campos=Math.min(RT_F,f.length+(cur>0&&f.length<RT_F?1:0));
+    done=f.length>=RT_F;
+    for(let i=0;i<3;i++){const s=f.slice(i*RT_R,i*RT_R+RT_R);if(s.length)rounds.push(s.reduce((x,y)=>x+y,0)+(f.length<(i+1)*RT_R&&f.length>=i*RT_R?cur:0));}
+    if(!rounds.length&&cur)rounds=[cur];
+    if(campos)per1000=done?R/3:R/(campos/RT_R);
+  }else if(r.cur&&typeof r.cur==="object"){
+    legacy=true;let mat=0,agg=0;
+    [...(r.fields||[]),r.cur].forEach(x=>{mat+=x.mat||0;agg+=x.agg||0;punt+=x.punt||0;});
+    const n=mat+agg+punt;R=agg;campos=(r.fields||[]).length+((r.cur.mat||r.cur.agg||r.cur.punt)?1:0);done=true;
+    if(n)per1000=agg*1000/n;
+  }
+  const has=campos>0;
+  const pct=per1000/10,abs=Number.isFinite(rbc)?per1000*rbc:NaN,corr=Number.isFinite(hct)?pct*hct/hn:NaN;
   let ipr=NaN;
   if(st.especie==="Humano"&&Number.isFinite(corr)){const mf=hct>=40?1:hct>=30?1.5:hct>=20?2:2.5;ipr=corr/mf;}
-  return Object.assign(t,{pA,pP,absA,absP,corr,ipr,rbc,hct,hn});
+  return {has,R,campos,done,per1000,pct,abs,corr,ipr,rbc,hct,hn,rounds,legacy,punt};
 }
 function rtLines(st=S){
-  const c=rtCalc(st);if(!c.n)return [];
-  const cat=st.especie==="Felino",L=[];
-  L.push(`RETICULOCITOS (${c.n} eritrocitos en ${c.campos} ${c.campos===1?"campo":"campos"})`);
-  L.push(`${cat?"Reticulocitos agregados":"Reticulocitos"}: ${c.agg} (${fmt(c.pA,1)} %`+(Number.isFinite(c.absA)?`; ${absStr(c.absA,1)}`:"")+")");
-  if(cat)L.push(`Reticulocitos punteados: ${c.punt} (${fmt(c.pP,1)} %`+(Number.isFinite(c.absP)?`; ${absStr(c.absP,1)}`:"")+")");
+  const c=rtCalc(st);if(!c.has)return [];
+  const lab=st.especie==="Felino"?"Reticulocitos agregados":"Reticulocitos",L=[];
+  L.push(c.legacy?`RETICULOCITOS (${c.campos} campos)`:`RETICULOCITOS (${c.done?"3 rondas de 5 campos":`${c.campos} de 15 campos, preliminar`})`);
+  if(!c.legacy&&c.rounds.length)L.push(`Rondas: ${c.rounds.join(", ")} (total ${c.R})`);
+  L.push(`${lab}: ${fmt(c.per1000,1)} por cada 1000 eritrocitos (${fmt(c.pct,1)} %`+(Number.isFinite(c.abs)?`; ${absStr(c.abs,1)}`:"")+")");
   if(Number.isFinite(c.corr))L.push(`Porcentaje corregido (Hto ${fmt(c.hct,0)} %, referencia ${c.hn} %): ${fmt(c.corr,1)} %`);
   if(Number.isFinite(c.ipr))L.push(`Índice de producción reticulocitaria: ${fmt(c.ipr,2)}`);
   return L;
 }
-const RTNOTE={agg:880,punt:987.77,mat:587.33};
-function rtTap(kind,el){
+function rtDeny(msg){const b=$("rtTap");b.classList.remove("deny");void b.offsetWidth;b.classList.add("deny");$("rtHint").textContent=msg;pluck(261.63,0,.18,.12);buzz([40,40,40]);}
+function rtTap(){
+  const r=S.rt;
+  if(r.fields.length>=RT_F){rtDeny("Conteo de retis completo. Usa Deshacer o Nuevo para corregir.");return;}
   if(!S.inicio)S.inicio=Date.now();
-  const before=rtTot().n;
-  S.rt.cur[kind]=(S.rt.cur[kind]||0)+1;S.rt.hist.push(kind);
-  if(typeof VISTA!=="undefined"&&VISTA==="mech")clack(kind==="mat"?.9:1.1);else pluck(RTNOTE[kind],0,.25,.14);
-  buzz(kind==="mat"?8:[10,30,10]);
-  if(el){el.classList.remove("flash");void el.offsetWidth;el.classList.add("flash");}
-  if(before<1000&&before+1>=1000){fin();$("status").textContent="Retis: 1000 eritrocitos";}
+  r.cur++;r.hist.push("r");
+  if(typeof VISTA!=="undefined"&&VISTA==="mech")clack(1.1);else pluck(880,0,.22,.14);
+  buzz(10);const b=$("rtTap");b.classList.remove("flash");void b.offsetWidth;b.classList.add("flash");
   save();render();
 }
 function rtNext(){
-  const c=S.rt.cur;
-  if(!(c.mat||c.agg||c.punt)){$("rtHint").textContent="Este campo todavía está vacío.";return;}
-  S.rt.fields.push(c);S.rt.cur={mat:0,agg:0,punt:0};S.rt.hist.push("campo");
-  clack(.8);buzz(15);save();render();
+  const r=S.rt;
+  if(r.fields.length>=RT_F)return;
+  r.fields.push(r.cur);r.cur=0;r.hist.push("f");
+  if(!S.inicio)S.inicio=Date.now();
+  if(r.fields.length>=RT_F){fin();celebrate(RETI_SPRITES);$("status").textContent="Retis completos";}
+  else{clack(.8);buzz(15);if(r.fields.length%RT_R===0)pluck(1046.5,0,.3,.12);}
+  save();render();
 }
 function rtUndo(){
-  const k=S.rt.hist.pop();if(!k)return;
-  if(k==="campo"){S.rt.cur=S.rt.fields.pop()||{mat:0,agg:0,punt:0};}
-  else if(S.rt.cur[k]>0)S.rt.cur[k]--;
+  const r=S.rt,k=r.hist.pop();if(!k)return;
+  if(k==="f")r.cur=r.fields.pop()||0;else if(r.cur>0)r.cur--;
   pluck(392,0,.18,.1);buzz([10,30,10]);save();render();
 }
 function renderRetis(){
-  const c=rtCalc(),cat=S.especie==="Felino";
-  $("rtN").innerHTML=`${c.n}<small> / 1000 eritrocitos</small>`;
-  $("rtCampo").textContent=`Campo ${c.campoAct}`;
-  const bar=$("rtBar");bar.firstElementChild.style.width=Math.min(100,c.n/10)+"%";bar.classList.toggle("done",c.n>=1000);
-  $("rtStats").textContent=c.n?`${cat?"Agregados":"Reticulocitos"} ${fmt(c.pA,1)} %`+(cat?` · Punteados ${fmt(c.pP,1)} %`:"")+(Number.isFinite(c.absA)?` · ${absStr(c.absA,1)}`:"")+(Number.isFinite(c.corr)?` · Corregido ${fmt(c.corr,1)} %`:"")+(Number.isFinite(c.ipr)?` · IPR ${fmt(c.ipr,2)}`:""):"Sin conteo todavía";
-  $("rkAgg").textContent=S.rt.cur.agg;$("rkPunt").textContent=S.rt.cur.punt;$("rkMat").textContent=S.rt.cur.mat;
-  $("rkAggL").textContent=cat?"Agregado":"Reticulocito";
-  $("rkPuntB").hidden=!cat;$("rkeys").classList.toggle("two",!cat);
-  const m=$("rtMat");if(document.activeElement!==m)m.value=S.rt.cur.mat||"";
-  [["rtRbc","rbc"],["rtHct","hct"]].forEach(([id,k])=>{const i=$(id);if(document.activeElement!==i)i.value=S.rt[k]||"";});
-  $("rtHint").textContent=cat?"Azul de metileno nuevo. En gato registra por separado agregados y punteados: solo los agregados reflejan regeneración reciente. Cuenta campos hasta 1000 eritrocitos.":"Azul de metileno nuevo. Toca cada reticulocito y cada eritrocito maduro del campo (o escribe los maduros) y pasa al siguiente campo hasta llegar a 1000 eritrocitos.";
-  const box=$("rtRes");box.hidden=!c.n;
-  if(c.n){
+  const r=S.rt,c=rtCalc(),cat=S.especie==="Felino",fd=r.fields.length,done=fd>=RT_F;
+  const ronda=Math.min(3,Math.floor(fd/RT_R)+1),campo=done?RT_R:fd%RT_R+1;
+  $("rtN").innerHTML=`${c.R}<small> ${cat?"agregados":"retis"}</small>`;
+  $("rtCampo").textContent=done?"Completo · 15 campos":`Ronda ${ronda} · Campo ${campo} de 5`;
+  let dots="";for(let g=0;g<3;g++){dots+=`<span class="grp">`;for(let i=0;i<RT_R;i++){const k=g*RT_R+i;dots+=`<i class="${k<fd?"on":k===fd&&!done?"cur":""}"></i>`;}dots+="</span>";}
+  $("rtDots").innerHTML=dots;
+  $("rtStats").textContent=c.has?`${done?"":"Preliminar: "}${fmt(c.per1000,1)} por 1000 eritrocitos · ${fmt(c.pct,1)} %`+(Number.isFinite(c.abs)?` · ${absStr(c.abs,1)}`:"")+(Number.isFinite(c.corr)?` · Corregido ${fmt(c.corr,1)} %`:"")+(Number.isFinite(c.ipr)?` · IPR ${fmt(c.ipr,2)}`:""):"Sin conteo todavía";
+  $("rkCur").textContent=r.cur;
+  $("rkLabel").textContent=done?"Conteo completo":`${cat?"Agregados":"Reticulocitos"} en este campo`;
+  $("rtNext").textContent=fd===RT_F-1?"Terminar":"Siguiente campo";
+  $("rtNext").disabled=done;
+  [["rtRbc","rbc"]].forEach(([id,k])=>{const i=$(id);if(document.activeElement!==i)i.value=r[k]||"";});
+  $("rtHint").textContent=cat?"Azul de metileno nuevo. Cuenta solo los reticulocitos agregados de cada campo: 3 rondas de 5 campos. El total entre 3 da los retis por cada 1000 eritrocitos.":"Azul de metileno nuevo. Toca cada reticulocito del campo y pasa al siguiente: 3 rondas de 5 campos. El total entre 3 da los retis por cada 1000 eritrocitos.";
+  const box=$("rtRes");box.hidden=!c.has;
+  if(c.has){
     const row=(a,b)=>`<tr><td>${a}</td><td>${b}</td></tr>`;
-    $("rtBody").innerHTML=row("Eritrocitos contados",`${c.n} (${c.campos} ${c.campos===1?"campo":"campos"})`)
-      +row(cat?"Agregados":"Reticulocitos",`${c.agg} · ${fmt(c.pA,1)} %`+(Number.isFinite(c.absA)?` · ${absStr(c.absA,1)}`:""))
-      +(cat?row("Punteados",`${c.punt} · ${fmt(c.pP,1)} %`+(Number.isFinite(c.absP)?` · ${absStr(c.absP,1)}`:"")):"")
+    $("rtBody").innerHTML=(c.legacy?"":row("Campos contados",`${c.campos} de 15`+(c.rounds.length?` · rondas ${c.rounds.join(", ")}`:"")))
+      +row(cat?"Agregados contados":"Reticulocitos contados",c.R)
+      +row("Por cada 1000 eritrocitos",fmt(c.per1000,1))
+      +row("Porcentaje",`${fmt(c.pct,1)} %`)
+      +(Number.isFinite(c.abs)?row("Absoluto",absStr(c.abs,1)):"")
       +(Number.isFinite(c.corr)?row("Porcentaje corregido",`${fmt(c.corr,1)} %`):"")
       +(Number.isFinite(c.ipr)?row("Índice de producción",fmt(c.ipr,2)):"");
-    $("rtNote").textContent=(Number.isFinite(c.rbc)?"":"Escribe los eritrocitos del equipo en la pestaña Retis para el valor absoluto. ")+(Number.isFinite(c.hct)?"":"Escribe el hematocrito para el porcentaje corregido.");
+    $("rtNote").textContent=(c.done?"":"Conteo incompleto: el valor es preliminar. ")+(Number.isFinite(c.rbc)?"":"Escribe los eritrocitos del equipo en Retis para el absoluto. ");
   }
 }
-const RTICO={rkAggI:"retiAgg",rkPuntI:"retiPunt",rkMatI:"rbcMat"};
-for(const id in RTICO)$(id).innerHTML=ICONS[RTICO[id]];
-$("rkeys").addEventListener("click",e=>{const b=e.target.closest("button[data-rk]");if(b)rtTap(b.dataset.rk,b);});
+/* Dibujo del reticulocito (azul de metileno nuevo) */
+function retiSVG(seed=37){
+  const R=(s=>()=>{s=(s*16807)%2147483647;return(s-1)/2147483646;})(seed),f=v=>v.toFixed(1);
+  let net="";
+  for(let i=0;i<12;i++){let a=R()*Math.PI*2,r=Math.sqrt(R())*17,x=50+Math.cos(a)*r,y=50+Math.sin(a)*r,d=`M${f(x)} ${f(y)}`;
+    for(let j=0;j<4;j++){x+=(R()-.5)*13;y+=(R()-.5)*13;d+=` Q${f(x+(R()-.5)*5)} ${f(y+(R()-.5)*5)} ${f(x)} ${f(y)}`;}
+    net+=`<path d="${d}" stroke="#1E4192" stroke-width="${(1+R()*1.3).toFixed(2)}" fill="none" stroke-linecap="round" opacity=".85"/>`;}
+  for(let i=0;i<34;i++){const a=R()*Math.PI*2,r=Math.sqrt(R())*21;net+=`<circle cx="${f(50+Math.cos(a)*r)}" cy="${f(50+Math.sin(a)*r)}" r="${(.8+R()*1.6).toFixed(2)}" fill="#1B3C8C" opacity="${(.6+R()*.35).toFixed(2)}"/>`;}
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="300" height="300"><defs>
+<radialGradient id="rc" cx="42%" cy="36%" r="70%"><stop offset="0" stop-color="#E3EEF2"/><stop offset=".72" stop-color="#C2D6E0"/><stop offset="1" stop-color="#9DBACB"/></radialGradient>
+<radialGradient id="rh" cx="32%" cy="26%" r="60%"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+<radialGradient id="rs" cx="42%" cy="38%" r="70%"><stop offset=".62" stop-color="#0E2A4E" stop-opacity="0"/><stop offset="1" stop-color="#0E2A4E" stop-opacity=".25"/></radialGradient>
+<clipPath id="rcl"><circle cx="50" cy="50" r="32"/></clipPath><filter id="rb" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation=".3"/></filter></defs>
+<circle cx="50" cy="50" r="32" fill="url(#rc)"/><g clip-path="url(#rcl)" filter="url(#rb)">${net}</g>
+<circle cx="50" cy="50" r="32" fill="url(#rs)"/><circle cx="50" cy="50" r="32" fill="url(#rh)"/><circle cx="50" cy="50" r="32" fill="none" stroke="#86A6BA" stroke-width=".9"/></svg>`;
+}
+const RETI_URL="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(retiSVG());
+$("rtArt").src=RETI_URL;
+$("rtTap").addEventListener("click",rtTap);
 $("rtNext").addEventListener("click",rtNext);
 $("rtUndo").addEventListener("click",rtUndo);
-$("rtMat").addEventListener("input",e=>{const v=Math.max(0,Math.floor(+e.target.value||0));if(!S.inicio&&v)S.inicio=Date.now();S.rt.cur.mat=v;save();render();});
-$("rtMat").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();e.target.blur();}});
 $("rtRbc").addEventListener("input",e=>{S.rt.rbc=e.target.value;save();render();});
-$("rtHct").addEventListener("input",e=>{S.rt.hct=e.target.value;save();render();});
+/* Sprites de reticulocitos para la explosión final */
+const RETI_SPRITES=[];
+[37,91].forEach(sd=>{
+  const img=new Image();img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(retiSVG(sd));
+  (img.decode?img.decode():Promise.resolve()).then(()=>{const px=Math.round(80*Math.min(window.devicePixelRatio||1,3));const c=document.createElement("canvas");c.width=c.height=px;c.getContext("2d").drawImage(img,0,0,px,px);RETI_SPRITES.push(c);}).catch(()=>{});
+});
 
 /* Ajustes */
 let prevHash="#conteo";
@@ -1843,7 +2050,7 @@ function scrubBar(bar,sel,pick){
     if(th&&last){
       const r=bar.getBoundingClientRect(),w=last.offsetWidth,pad=last.offsetLeft>0?Math.min(...[...bar.querySelectorAll(sel)].map(x=>x.offsetLeft)):0;
       const tx=Math.max(pad,Math.min(r.width-w-pad,e.clientX-r.left-w/2));
-      th.style.width=w+"px";th.style.transform=`translateX(${tx}px) scale(1.07)`;
+      th.style.width=w+"px";th.style.height=last.offsetHeight+"px";th.style.top=last.offsetTop+"px";th.style.transform=`translateX(${tx}px) scale(1.07)`;
     }
   });
   const end=e=>{
@@ -1861,11 +2068,13 @@ function makeThumb(bar,sel,isActive){
   const place=()=>{
     const b=[...bar.querySelectorAll(sel)].find(isActive);
     if(!b){th.style.opacity=0;return;}
-    th.style.opacity=1;th.style.width=b.offsetWidth+"px";th.style.transform=`translateX(${b.offsetLeft}px)`;
+    th.style.opacity=1;th.style.width=b.offsetWidth+"px";th.style.height=b.offsetHeight+"px";th.style.top=b.offsetTop+"px";th.style.transform=`translateX(${b.offsetLeft}px)`;
   };
   bar._place=place;
   bar.classList.add("noanim");place();requestAnimationFrame(()=>requestAnimationFrame(()=>bar.classList.remove("noanim")));
-  if(window.ResizeObserver)new ResizeObserver(()=>{bar.classList.add("noanim");place();requestAnimationFrame(()=>bar.classList.remove("noanim"));}).observe(bar);
+  const snap=()=>{bar.classList.add("noanim");place();requestAnimationFrame(()=>requestAnimationFrame(()=>bar.classList.remove("noanim")));};
+  if(window.ResizeObserver){const ro=new ResizeObserver(snap);ro.observe(bar);bar.querySelectorAll(sel).forEach(x=>ro.observe(x));bar._ro=ro;}
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(snap);
   return place;
 }
 var tabPlace=makeThumb($("tabbar"),"button[data-tab]",b=>b.getAttribute("aria-current")==="page");
@@ -1873,7 +2082,15 @@ var modePlace=makeThumb(document.querySelector(".mode-ctl"),"button[data-mode]",
 window.addEventListener("hashchange",()=>setTimeout(tabPlace,0));
 window.addEventListener("load",()=>{tabPlace();modePlace();});
 scrubBar($("tabbar"),"button[data-tab]",b=>{location.hash=b.dataset.tab;});
+var segPlace=makeThumb(document.querySelector(".head .seg-ctl"),"button[data-meta]",b=>b.getAttribute("aria-pressed")==="true");
+scrubBar(document.querySelector(".head .seg-ctl"),"button[data-meta]",b=>{
+  const m=+b.dataset.meta;
+  if(m<total()){$("status").textContent=`Ya llevas ${total()}; no puedes bajar a ${m}`;segPlace();return;}
+  S.meta=m;save();render();
+});
 scrubBar(document.querySelector(".mode-ctl"),"button[data-mode]",b=>setMode(b.dataset.mode));
+
+setupVctls();
 
 /* App sin conexión (solo en GitHub Pages) */
 if("serviceWorker" in navigator&&/github\.io$/.test(location.hostname)){
