@@ -56,7 +56,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 .view{display:none}
 
 /* ===== Vista de conteo: una sola pantalla ===== */
-#v-count.active{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:8px;height:100%;max-width:900px;margin:0 auto;padding:8px 10px 10px}
+#v-count.active{display:grid;grid-template-rows:auto auto minmax(0,1fr);gap:8px;height:100%;max-width:900px;margin:0 auto;padding:8px 10px calc(86px + env(safe-area-inset-bottom,0px))}
 .head{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px}
 .big{font-size:46px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 .big small{font-size:20px;color:var(--muted);font-weight:400;letter-spacing:0}
@@ -267,17 +267,18 @@ body.v-cells .cell .art-clean{display:block}
 .hbody .row .btn{padding:11px 6px;font-size:15px}
 /* ===== Horizontal (teléfono acostado): panel lateral + cuadrícula ===== */
 @media (orientation:landscape) and (max-height:540px){
-  #v-count.active{grid-template-columns:minmax(230px,31%) 1fr;grid-template-rows:auto minmax(0,1fr) auto;
-    grid-template-areas:"head cells" ". cells" "bottom cells";max-width:none;gap:10px;
+  #v-count.active{grid-template-columns:minmax(240px,31%) 1fr;grid-template-rows:auto auto minmax(0,1fr);
+    grid-template-areas:"head cells" "mode cells" ". cells";max-width:none;gap:10px;padding-bottom:max(10px,env(safe-area-inset-bottom));
     padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right))}
   #v-count .head{grid-area:head;grid-template-columns:auto 1fr;row-gap:8px}
   #v-count .head .big{font-size:40px;grid-row:1;grid-column:1}
   #v-count .head .seg-ctl{grid-row:1;grid-column:2;justify-self:end}
   #v-count .head .wbcbox{grid-row:2;grid-column:1/-1}
   #v-count .head .prog{grid-row:3;grid-column:1/-1}
-  #v-count .cells{grid-area:cells;max-width:none;height:100%}
-  #v-count .bottom{grid-area:bottom;grid-template-columns:1fr;max-width:none}
-  #v-count .bottom .btn{padding:10px}
+  #v-count .modebar{grid-area:mode;flex-wrap:wrap}
+  #v-count .mode-ctl{flex-basis:100%}
+  #v-count .cells,#v-count .mpanel,#v-count .rpanel{grid-area:cells;max-width:none;height:100%}
+  body.counting .tabbar{left:max(10px,env(safe-area-inset-left));transform:none;width:max(240px,calc(31vw - 16px));bottom:max(8px,env(safe-area-inset-bottom))}
   body:not(.v-cells) .cell img.art{left:2px;right:auto;width:58%;top:22px;height:calc(100% - 24px)}
   body:not(.v-cells) .cell .nums{left:auto;right:10px;bottom:auto;top:calc(50% + 10px);transform:translateY(-50%)}
   .sheet-bg{align-items:center}
@@ -349,6 +350,102 @@ body.v-mech .undo-cell.flash svg{animation:keyp .17s ease-out}
 .jump button[aria-current="true"]{background:var(--azure);border-color:var(--azure);color:var(--surface)}
 #sec-conteo,#sec-morf,#sec-para,#isec,#sec-rep{scroll-margin-top:122px}
 #v-set.active{display:block}
+/* ===== Versión gold: fondo, pestañas, modos, retis, ajustes, cristal ===== */
+.bgfx{position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+  radial-gradient(60% 40% at 10% 6%,color-mix(in srgb,var(--c-seg) 30%,transparent),transparent 70%),
+  radial-gradient(50% 35% at 92% 28%,color-mix(in srgb,var(--c-eos) 20%,transparent),transparent 70%),
+  radial-gradient(60% 40% at 18% 78%,color-mix(in srgb,var(--c-lym) 18%,transparent),transparent 70%),
+  radial-gradient(55% 35% at 88% 96%,color-mix(in srgb,var(--c-mono) 26%,transparent),transparent 70%)}
+body.v-mech.counting .bgfx{display:none}
+.page{padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:40;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:2px;width:min(560px,calc(100% - 20px));padding:5px;border-radius:26px}
+.tabbar button{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px 5px;border:0;border-radius:20px;
+  background:transparent;color:var(--muted);font-size:11.5px;font-weight:700;cursor:pointer}
+.tabbar button svg{width:23px;height:23px}
+.tabbar button[aria-current="page"]{color:var(--azure);background:color-mix(in srgb,var(--azure) 14%,transparent)}
+.tabbar button.ready::after{content:"";position:absolute;top:5px;right:calc(50% - 18px);width:9px;height:9px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 2px var(--surface)}
+#v-para.active{display:block}
+.modebar{display:flex;align-items:center;gap:8px}
+.mode-ctl{flex:1;display:flex;border-radius:999px;overflow:hidden}
+.mode-ctl button{flex:1;border:0;background:transparent;color:var(--muted);font-weight:700;padding:9px 6px;cursor:pointer;font-size:15px}
+.modebar .btn{padding:9px 14px}
+.modebar .btn.icon{padding:8px 9px}
+.mpanel,.rpanel{display:none;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:0 2px 8px}
+#v-count[data-mode="morf"] .cells,#v-count[data-mode="retis"] .cells{display:none}
+#v-count[data-mode="morf"] .mpanel,#v-count[data-mode="retis"] .rpanel{display:block}
+.rcard{padding:12px 14px;margin-bottom:10px}
+.rtop{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.rbig{font-size:36px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.rbig small{font-size:14px;color:var(--muted);font-weight:400}
+.rcampo{font-weight:700;color:var(--azure)}
+.rcard .bar{margin-top:10px}
+.rstats{margin-top:8px;font-size:15px;font-variant-numeric:tabular-nums}
+.rinputs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.rkeys{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rkeys.two{grid-template-columns:1fr 1fr}
+.rkey{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 6px;border-radius:20px;cursor:pointer;color:var(--ink);
+  border:1px solid var(--glass-edge);background:color-mix(in srgb,var(--g) 12%,var(--glass-bg));
+  -webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%);
+  box-shadow:inset 0 1px 0 var(--glass-hi),0 8px 18px -10px var(--glass-shadow);touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.rkey[hidden]{display:none}
+.rkey:active{transform:scale(.97)}
+.rkey.flash{animation:glowpulse .5s cubic-bezier(.2,.7,.3,1)}
+.rk-ico svg{width:46px;height:46px;display:block}
+.rk-n{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.05}
+.rk-l{font-size:13px;color:var(--muted);font-weight:700;text-align:center}
+.rmat{margin:10px 0 2px}
+.spcard{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;margin:4px 0 10px}
+.setrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.setrow strong{display:block}
+.setrow span{display:block;font-size:13.5px;color:var(--muted)}
+.setrow .vctl{margin-top:0;flex-shrink:0}
+.switch{flex:0 0 52px;width:52px;height:32px;border-radius:16px;border:0;cursor:pointer;position:relative;background:color-mix(in srgb,var(--muted) 35%,transparent);transition:background .2s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.25);transition:transform .2s}
+.switch[aria-checked="true"]{background:var(--ok)}
+.switch[aria-checked="true"]::after{transform:translateX(20px)}
+/* Cristal esmerilado en botones de grado y selectores */
+.grade,.seg-ctl,.vctl,.mode-ctl{background:var(--glass-bg);border:1px solid var(--glass-edge);
+  -webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%);
+  box-shadow:inset 0 1px 0 var(--glass-hi),0 6px 14px -8px var(--glass-shadow)}
+.grade button,.vctl button{background:transparent}
+.grade button+button{border-left:1px solid color-mix(in srgb,var(--glass-edge) 70%,transparent)}
+.grade button[aria-pressed="true"]{background:color-mix(in srgb,var(--eosin) 80%,transparent);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+.seg-ctl button[aria-pressed="true"],.vctl button[aria-pressed="true"],.mode-ctl button[aria-pressed="true"]{background:color-mix(in srgb,var(--azure) 82%,transparent);color:var(--surface);box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+.glass .seg-ctl{background:var(--glass-bg)}
+/* Subpestañas de morfología */
+.subtabs{position:sticky;top:0;z-index:3;display:flex;gap:4px;padding:4px;margin:0 0 6px;border-radius:999px}
+.subtabs button{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;border:0;border-radius:999px;background:transparent;color:var(--muted);font-weight:700;font-size:14px;padding:8px 4px;cursor:pointer;white-space:nowrap}
+.subtabs button b{min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--eosin);color:#fff;font-size:11px;line-height:18px}
+.subtabs button[aria-selected="true"]{color:var(--surface);background:linear-gradient(180deg,color-mix(in srgb,var(--azure) 70%,#fff),var(--azure));box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 4px 10px -4px color-mix(in srgb,var(--azure) 70%,transparent)}
+.wbcbox.deny{animation:deny .38s ease-in-out;border-color:var(--eosin)!important}
+.head .seg-ctl button{padding:7px 10px}
+.wbcbox span{font-size:10.5px}
+#notas[hidden]{display:none}
+/* Cristal esmerilado de laboratorio, más visible */
+:root{--glass-bg:rgba(250,251,255,.42);--glass-edge:rgba(255,255,255,.95);--glass-line:rgba(45,55,100,.16);--glass-hi:rgba(255,255,255,.95);--glass-shadow:rgba(30,30,90,.24);--sheen:rgba(255,255,255,.62)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--glass-bg:rgba(46,44,70,.46);--glass-edge:rgba(255,255,255,.2);--glass-line:rgba(0,0,0,.45);--glass-hi:rgba(255,255,255,.2);--glass-shadow:rgba(0,0,0,.6);--sheen:rgba(255,255,255,.12)}}
+:root[data-theme="dark"]{--glass-bg:rgba(46,44,70,.46);--glass-edge:rgba(255,255,255,.2);--glass-line:rgba(0,0,0,.45);--glass-hi:rgba(255,255,255,.2);--glass-shadow:rgba(0,0,0,.6);--sheen:rgba(255,255,255,.12)}
+.bgfx{background:
+  linear-gradient(color-mix(in srgb,var(--azure) 7%,transparent) 1px,transparent 1px) 0 0/22px 22px,
+  linear-gradient(90deg,color-mix(in srgb,var(--azure) 7%,transparent) 1px,transparent 1px) 0 0/22px 22px,
+  radial-gradient(55% 38% at 8% 4%,color-mix(in srgb,var(--c-seg) 40%,transparent),transparent 70%),
+  radial-gradient(45% 32% at 95% 26%,color-mix(in srgb,var(--c-eos) 28%,transparent),transparent 70%),
+  radial-gradient(55% 38% at 15% 80%,color-mix(in srgb,var(--c-lym) 26%,transparent),transparent 70%),
+  radial-gradient(50% 32% at 90% 97%,color-mix(in srgb,var(--c-mono) 34%,transparent),transparent 70%)}
+.glass,.grade,.seg-ctl,.vctl,.mode-ctl,.subtabs,.rkey,.spcard{
+  background:linear-gradient(180deg,var(--sheen),transparent 55%),var(--glass-bg);
+  -webkit-backdrop-filter:blur(24px) saturate(200%) brightness(1.05);backdrop-filter:blur(24px) saturate(200%) brightness(1.05);
+  border:1px solid var(--glass-line);
+  box-shadow:inset 0 0 0 1px var(--glass-edge),inset 0 1px 0 var(--glass-hi),inset 0 -12px 22px -18px var(--glass-hi),0 12px 28px -14px var(--glass-shadow),0 1px 2px rgba(20,20,60,.08)}
+.rkey{background:linear-gradient(180deg,var(--sheen),transparent 55%),color-mix(in srgb,var(--g) 14%,var(--glass-bg))}
+.glass::before{opacity:.35}
+.grade button[aria-pressed="true"]{background:linear-gradient(180deg,color-mix(in srgb,var(--eosin) 68%,#fff),var(--eosin));color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 3px 8px -3px color-mix(in srgb,var(--eosin) 70%,transparent)}
+.seg-ctl button[aria-pressed="true"],.vctl button[aria-pressed="true"],.mode-ctl button[aria-pressed="true"]{background:linear-gradient(180deg,color-mix(in srgb,var(--azure) 70%,#fff),var(--azure));color:var(--surface);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 3px 8px -3px color-mix(in srgb,var(--azure) 70%,transparent)}
+.grade button+button{border-left:1px solid var(--glass-line)}
+.mode-ctl,.seg-ctl,.vctl,.grade,.subtabs{padding:3px;gap:2px}
+.mode-ctl button,.seg-ctl button,.vctl button,.grade button{border-radius:999px}
+.tabbar button[aria-current="page"]{background:linear-gradient(180deg,color-mix(in srgb,var(--azure) 22%,transparent),color-mix(in srgb,var(--azure) 10%,transparent));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--azure) 25%,transparent)}
 /* Brillo único por célula al tocar */
 .cell .ripple{position:absolute;border-radius:50%;pointer-events:none;z-index:0;
   background:radial-gradient(circle,color-mix(in srgb,var(--g) 75%,transparent) 0%,color-mix(in srgb,var(--g) 32%,transparent) 38%,transparent 68%)}
@@ -368,6 +465,7 @@ body.v-mech .undo-cell.flash svg{animation:keyp .17s ease-out}
 </style>
 </head>
 <body class="counting">
+<div class="bgfx" aria-hidden="true"></div>
 
 <!-- Conteo -->
 <section class="view" id="v-count" aria-label="Conteo">
@@ -383,13 +481,49 @@ body.v-mech .undo-cell.flash svg{animation:keyp .17s ease-out}
       <div class="status" id="status" aria-live="polite"></div>
     </div>
   </div>
-  <div class="cells" id="cells"></div>
-  <div class="bottom glass">
-    <button class="btn" id="toRes" type="button">Resultado</button>
-    <button class="btn" id="toHist" type="button">Historial</button>
+  <div class="modebar">
+    <div class="mode-ctl" role="group" aria-label="Modo">
+      <button type="button" data-mode="conteo" aria-pressed="true">Conteo</button>
+      <button type="button" data-mode="morf" aria-pressed="false">Morfología</button>
+      <button type="button" data-mode="retis" aria-pressed="false">Retis</button>
+    </div>
+    <button class="btn icon" id="toSet0" type="button" aria-label="Ajustes"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
     <button class="btn warn" id="reset" type="button">Nuevo</button>
   </div>
+  <div class="cells" id="cells"></div>
+  <div class="mpanel" id="mpanel">
+    <div class="subtabs" id="msub" role="tablist" aria-label="Grupos de morfología"></div>
+    <div id="morph"></div>
+    <textarea id="notas" placeholder="Notas del frotis"></textarea>
+  </div>
+  <div class="rpanel" id="rpanel">
+    <div class="rcard glass">
+      <div class="rtop"><div class="rbig" id="rtN">0<small> / 1000 eritrocitos</small></div><div class="rcampo" id="rtCampo">Campo 1</div></div>
+      <div class="bar" id="rtBar"><i></i></div>
+      <div class="rstats" id="rtStats">Sin conteo todavía</div>
+    </div>
+    <div class="rinputs">
+      <label class="wbcbox"><span>Eritrocitos ×10¹²/L</span><input id="rtRbc" inputmode="decimal" autocomplete="off" placeholder="—"></label>
+      <label class="wbcbox"><span>Hematocrito %</span><input id="rtHct" inputmode="decimal" autocomplete="off" placeholder="—"></label>
+    </div>
+    <div class="rkeys" id="rkeys">
+      <button class="rkey" type="button" data-rk="agg" style="--g:#2E9BF0"><span class="rk-ico" id="rkAggI"></span><span class="rk-n" id="rkAgg">0</span><span class="rk-l" id="rkAggL">Reticulocito</span></button>
+      <button class="rkey" type="button" data-rk="punt" id="rkPuntB" style="--g:#A66BFF"><span class="rk-ico" id="rkPuntI"></span><span class="rk-n" id="rkPunt">0</span><span class="rk-l">Punteado</span></button>
+      <button class="rkey" type="button" data-rk="mat" style="--g:#E8806E"><span class="rk-ico" id="rkMatI"></span><span class="rk-n" id="rkMat">0</span><span class="rk-l">Eritrocito maduro</span></button>
+    </div>
+    <label class="sh-lab rmat">Maduros en este campo (puedes escribirlo)<input id="rtMat" type="number" inputmode="numeric" min="0" enterkeyhint="done"></label>
+    <div class="row"><button class="btn" id="rtUndo" type="button">Deshacer</button><button class="btn primary" id="rtNext" type="button">Siguiente campo</button></div>
+    <p class="note" id="rtHint"></p>
+  </div>
 </section>
+
+
+<nav class="tabbar glass" id="tabbar" aria-label="Secciones">
+  <button type="button" data-tab="conteo" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="3.5" width="5" height="5" rx="1.2"/><rect x="9.5" y="3.5" width="5" height="5" rx="1.2"/><rect x="15.5" y="3.5" width="5" height="5" rx="1.2"/><rect x="3.5" y="9.5" width="5" height="5" rx="1.2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1.2"/><rect x="15.5" y="9.5" width="5" height="5" rx="1.2"/><rect x="3.5" y="15.5" width="5" height="5" rx="1.2"/><rect x="9.5" y="15.5" width="5" height="5" rx="1.2"/><rect x="15.5" y="15.5" width="5" height="5" rx="1.2"/></svg>Conteo</button>
+  <button type="button" data-tab="parasitos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="13" r="6.5"/><circle cx="9" cy="12" r="1.3" fill="currentColor"/><circle cx="13" cy="15" r="1" fill="currentColor"/><path d="M16 8.5 L20 4.5"/></svg>Parásitos</button>
+  <button type="button" data-tab="resultado" id="tabRes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5"/><path d="M9 13h7M9 17h7"/></svg>Resultado</button>
+  <button type="button" data-tab="historial"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>Historial</button>
+</nav>
 
 <!-- Hoja: mantener presionada una célula -->
 <div class="sheet-bg" id="sheet" hidden>
@@ -410,21 +544,13 @@ body.v-mech .undo-cell.flash svg{animation:keyp .17s ease-out}
     <div class="topbar">
       <h1>Resultado</h1>
       <button class="btn icon" id="toSet" type="button" aria-label="Ajustes"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
-      <button class="btn" id="toCount" type="button">Volver al conteo</button>
-      <nav class="jump" id="jump" aria-label="Ir a sección">
-        <button type="button" data-to="sec-conteo" aria-current="true">Conteo</button>
-        <button type="button" data-to="sec-morf">Morfología</button>
-        <button type="button" data-to="sec-para">Parásitos</button>
-        <button type="button" data-to="isec" id="jInterp" hidden>Interpretación</button>
-        <button type="button" data-to="sec-rep">Reporte</button>
-      </nav>
     </div>
 
     <div class="patient" id="sec-conteo">
       <label>Paciente<input id="paciente" autocomplete="off" placeholder="Nombre o ID"></label>
       <label>Especie
         <select id="especie">
-          <option>Canino</option><option>Felino</option><option>Equino</option><option>Bovino</option><option>Otra</option>
+          <option>Canino</option><option>Felino</option><option>Humano</option>
         </select>
       </label>
       <label class="full">WBC del equipo (×10⁹/L)<input id="wbc" inputmode="decimal" placeholder="Ej. 14.2"></label>
@@ -432,21 +558,17 @@ body.v-mech .undo-cell.flash svg{animation:keyp .17s ease-out}
 
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Célula</th><th>Conteo</th><th>%</th><th>×10⁹/L</th></tr></thead>
+        <thead><tr><th>Célula</th><th>Conteo</th><th>%</th><th id="thAbs">×10⁹/L</th></tr></thead>
         <tbody id="tbody"></tbody>
       </table>
     </div>
     <p class="note" id="wbcnote"></p>
 
-    <h2 id="sec-morf">Morfología</h2>
-    <p class="note">Marca el grado observado; toca otra vez para quitarlo.</p>
-    <div id="morph"></div>
-    <textarea id="notas" placeholder="Notas del frotis"></textarea>
-
-    <h2 id="sec-para">Hemoparásitos</h2>
-    <p class="note">Incluye bacterias hemotrópicas y rickettsias. Marca la cantidad observada; toca otra vez para quitarla. La lista cambia según la especie.</p>
-    <div class="chips" style="margin:10px 0 4px"><button class="chip" id="pnone" type="button">Sin hemoparásitos observados</button></div>
-    <div id="paras"></div>
+    <div id="rtRes" hidden>
+      <h2>Reticulocitos</h2>
+      <div class="table-wrap"><table><tbody id="rtBody"></tbody></table></div>
+      <p class="note" id="rtNote"></p>
+    </div>
 
     <section id="isec" hidden>
       <h2>Interpretación</h2>
@@ -465,6 +587,20 @@ body.v-mech .undo-cell.flash svg{animation:keyp .17s ease-out}
   </div>
 </section>
 
+<!-- Parásitos -->
+<section class="view" id="v-para" aria-label="Parásitos">
+  <div class="page">
+    <div class="topbar">
+      <h1>Parásitos</h1>
+      <button class="btn icon" id="toSet3" type="button" aria-label="Ajustes"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+    </div>
+    <div class="spcard glass"><span>Especie: <strong id="paraSp">Canino</strong></span><button class="btn" id="paraChg" type="button">Cambiar</button></div>
+    <p class="note">Incluye bacterias hemotrópicas y rickettsias. Marca la cantidad observada; toca otra vez para quitarla. La lista cambia según la especie.</p>
+    <div class="chips" style="margin:10px 0 4px"><button class="chip" id="pnone" type="button">Sin hemoparásitos observados</button></div>
+    <div id="paras"></div>
+  </div>
+</section>
+
 <!-- Ajustes -->
 <section class="view" id="v-set" aria-label="Ajustes">
   <div class="page">
@@ -472,9 +608,27 @@ body.v-mech .undo-cell.flash svg{animation:keyp .17s ease-out}
       <h1>Ajustes</h1>
       <button class="btn primary" id="setBack" type="button">Listo</button>
     </div>
+    <h2>Sonido y vibración</h2>
+    <div class="setrow"><div><strong>Sonidos</strong><span>Notas al contar y aviso al completar.</span></div><button class="switch" type="button" role="switch" data-set="sound"></button></div>
+    <div class="setrow"><div><strong>Sonar en modo silencio</strong><span>Suena aunque el iPhone esté en silencio, pero iOS muestra la isla dinámica. Apagado: respeta el silencio y no aparece.</span></div><button class="switch" type="button" role="switch" data-set="silent"></button></div>
+    <div class="setrow"><div><strong>Vibración</strong><span>En iPhone es un toque ligero; en Android cada célula vibra distinto.</span></div><button class="switch" type="button" role="switch" data-set="vib"></button></div>
+
+    <h2>Resultados</h2>
+    <div class="setrow" id="unitsRow"></div>
+    <h2>Al empezar un conteo nuevo</h2>
+    <div class="setrow"><div><strong>Meta</strong></div><div class="vctl" id="setMeta" role="group" aria-label="Meta predeterminada"><button type="button" data-v="100">100</button><button type="button" data-v="200">200</button></div></div>
+    <div class="setrow"><div><strong>Valores absolutos</strong><span>Cómo se muestran en Resultado, el reporte y el CSV. El WBC del equipo se sigue anotando en ×10⁹/L.</span></div><div class="vctl" id="setUnits" role="group" aria-label="Unidades de los absolutos"><button type="button" data-v="si">×10⁹/L</button><button type="button" data-v="ul">cél/µL</button></div></div>
+    <div class="setrow"><div><strong>Especie</strong></div><div class="vctl" id="setEsp" role="group" aria-label="Especie predeterminada"><button type="button" data-v="Canino">Canino</button><button type="button" data-v="Felino">Felino</button><button type="button" data-v="Humano">Humano</button></div></div>
+
     <h2>Vista del conteo</h2>
     <p class="note">Elige cómo se ven las células en la pantalla de conteo. La app recuerda tu elección.</p>
     <div class="vctl" id="vista" role="group" aria-label="Vista del conteo"><button type="button" data-v="cells">Células</button><button type="button" data-v="tiles">Casillas</button><button type="button" data-v="mech">Mecánico</button></div>
+
+    <h2>Respaldo del historial</h2>
+    <p class="note">Guarda todos tus conteos en un archivo para respaldarlos o pasarlos a otro dispositivo o a la versión nativa. Al importar, los conteos repetidos no se duplican.</p>
+    <div class="row"><button class="btn primary" id="expH" type="button">Exportar historial</button><button class="btn" id="impH" type="button">Importar</button></div>
+    <input type="file" id="impFile" accept=".json,application/json" hidden>
+    <div class="copy-msg" id="bkmsg" aria-live="polite"></div>
   </div>
 </section>
 
@@ -484,7 +638,6 @@ body.v-mech .undo-cell.flash svg{animation:keyp .17s ease-out}
     <div class="topbar">
       <h1>Historial</h1>
       <button class="btn icon" id="toSet2" type="button" aria-label="Ajustes"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
-      <button class="btn" id="toCount2" type="button">Volver al conteo</button>
     </div>
     <p class="note">Cada conteo se guarda al tocar Nuevo o Guardar en historial. Los datos viven solo en este dispositivo; instala la app en la pantalla de inicio para que Safari no los borre.</p>
     <div class="row"><button class="btn" id="csv" type="button">Copiar todo como tabla (CSV)</button></div>
@@ -495,14 +648,14 @@ body.v-mech .undo-cell.flash svg{animation:keyp .17s ease-out}
 
 <script>
 const CELLS=[
-  {id:"seg",name:"Neutrófilos",key:"5",c:"--c-seg",g:"#A66BFF"},
-  {id:"band",name:"Bandas",key:"1",c:"--c-band",g:"#5B6CFF"},
-  {id:"lym",name:"Linfocitos",key:"2",c:"--c-lym",g:"#2E9BF0"},
+  {id:"seg",name:"Neutrófilos",key:"4",c:"--c-seg",g:"#A66BFF"},
+  {id:"band",name:"Bandas",key:"5",c:"--c-band",g:"#5B6CFF"},
+  {id:"lym",name:"Linfocitos",key:"9",c:"--c-lym",g:"#2E9BF0"},
   {id:"mono",name:"Monocitos",key:"6",c:"--c-mono",g:"#22C1B4"},
-  {id:"eos",name:"Eosinófilos",key:"4",c:"--c-eos",g:"#FF7A45"},
+  {id:"eos",name:"Eosinófilos",key:"8",c:"--c-eos",g:"#FF7A45"},
   {id:"baso",name:"Basófilos",key:"7",c:"--c-baso",g:"#C44BD9"},
-  {id:"otras",name:"Otras",key:"8",c:"--c-otras",g:"#E8B030"},
-  {id:"nrbc",name:"nRBC",key:"9",c:"--c-nrbc",g:"#FF4D7A"}
+  {id:"otras",name:"Otras",key:"1",c:"--c-otras",g:"#E8B030"},
+  {id:"nrbc",name:"nRBC",key:"2",c:"--c-nrbc",g:"#FF4D7A"}
 ];
 const ABBR={seg:"SEG",band:"BAN",lym:"LIN",mono:"MON",eos:"EOS",baso:"BAS",otras:"OTR",nrbc:"nRBC"};
 const LONG={seg:"Neutrófilos segmentados",band:"Bandas",lym:"Linfocitos",mono:"Monocitos",eos:"Eosinófilos",baso:"Basófilos",otras:"Otras (blastos, atípicas)"};
@@ -522,7 +675,11 @@ const MORPH=[
   {k:"codo",n:"Codocitos",t:"codocitos",l:CM,s:"en diana"},
   {k:"heinz",n:"Cuerpos de Heinz",t:"cuerpos de Heinz",l:CM,s:"protrusiones redondas en el borde"},
   {k:"hj",n:"Cuerpos de Howell-Jolly",t:"cuerpos de Howell-Jolly",l:CM,s:"restos nucleares redondos"},
-  {k:"punteado",n:"Punteado basófilo",t:"punteado basófilo",l:GM,s:"gránulos azules finos"}]},
+  {k:"punteado",n:"Punteado basófilo",t:"punteado basófilo",l:GM,s:"gránulos azules finos"},
+  {k:"equino",n:"Equinocitos",t:"equinocitos",l:CM,s:"espículas cortas y regulares; a menudo artefacto"},
+  {k:"drepano",n:"Drepanocitos",t:"drepanocitos",l:CM,s:"células falciformes",sp:["Humano"]},
+  {k:"dacrio",n:"Dacriocitos",t:"dacriocitos",l:CM,s:"en lágrima",sp:["Humano"]},
+  {k:"elipto",n:"Eliptocitos",t:"eliptocitos",l:CM,s:"ovalados o elípticos",sp:["Humano"]}]},
  {g:"Leucocitos",label:"Morfología leucocitaria",items:[
   {k:"toxic",n:"Toxicidad neutrofílica",t:"toxicidad neutrofílica",l:GF,s:"basofilia, vacuolas, cuerpos de Döhle"},
   {k:"reactivos",n:"Linfocitos reactivos",t:"linfocitos reactivos",l:CM,s:"citoplasma azul intenso"},
@@ -556,14 +713,25 @@ function morphGroups(st){
 const morphText=st=>morphGroups(st).map(([l,t])=>`${l}: ${t}`).join(". ");
 const KEY="contador-diferencial-v1";
 
+/* Ajustes guardados */
+const SPECIES=["Canino","Felino","Humano"];
+let AJ={sound:true,silent:false,vib:true,meta:100,especie:"Canino",units:"si"};
+try{AJ=Object.assign(AJ,JSON.parse(localStorage.getItem("contador-ajustes")||"{}"));}catch(e){}
+function saveAJ(){try{localStorage.setItem("contador-ajustes",JSON.stringify(AJ));}catch(e){}}
+const absU=()=>AJ.units==="ul"?"/µL":"×10⁹/L";
+function absStr(x,dec=2){if(!Number.isFinite(x))return "—";return AJ.units==="ul"?Math.round(x*1000).toLocaleString("es-MX")+" /µL":x.toFixed(dec)+" ×10⁹/L";}
+function absNum(x,dec=2){if(!Number.isFinite(x))return "—";return AJ.units==="ul"?Math.round(x*1000).toLocaleString("es-MX"):x.toFixed(dec);}
+const RT0=()=>({fields:[],cur:{mat:0,agg:0,punt:0},rbc:"",hct:"",hist:[]});
 const newSid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-let S={sid:newSid(),inicio:null,paciente:"",especie:"Canino",wbc:"",meta:100,counts:{},hist:[],morf:[],mo:{},notas:"",paras:{},parasNone:false,interp:"",interpOn:false};
+let S={sid:newSid(),inicio:null,paciente:"",especie:AJ.especie,wbc:"",meta:AJ.meta,counts:{},hist:[],morf:[],mo:{},notas:"",paras:{},parasNone:false,interp:"",interpOn:false,rt:RT0()};
 try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw));}catch(e){}
 CELLS.forEach(c=>{if(typeof S.counts[c.id]!=="number")S.counts[c.id]=0;});
 if(!S.paras||typeof S.paras!=="object")S.paras={};
 if(!S.mo||typeof S.mo!=="object")S.mo={};
 if(Array.isArray(S.morf)&&S.morf.length){S.morf.forEach(m=>{if(LEGACY[m]&&!S.mo[LEGACY[m]])S.mo[LEGACY[m]]=1;});S.morf=[];}
 if(!S.sid)S.sid=newSid();
+if(!S.rt||!S.rt.cur)S.rt=RT0();
+if(!SPECIES.includes(S.especie))S.especie=AJ.especie;
 const HKEY="contador-diferencial-historial";
 let H=[];
 try{H=JSON.parse(localStorage.getItem(HKEY)||"[]");if(!Array.isArray(H))H=[];}catch(e){H=[];}
@@ -587,12 +755,13 @@ function beep(freq,dur,when=0){
     o.connect(g).connect(ac.destination);o.start(ac.currentTime+when);o.stop(ac.currentTime+when+dur);
   }catch(e){}
 }
-function buzz(p){try{if(navigator.vibrate)navigator.vibrate(p);else haptic();}catch(e){}}
+function buzz(p){if(!AJ.vib)return;try{if(navigator.vibrate)navigator.vibrate(p);else haptic();}catch(e){}}
 
 /* Notas: escala de Do mayor, sube del renglón de abajo al de arriba */
-const NOTE={band:523.25,lym:587.33,eos:659.25,seg:698.46,mono:783.99,baso:880,otras:987.77,nrbc:1046.5};
+const NOTE={otras:523.25,nrbc:587.33,seg:659.25,band:698.46,mono:783.99,baso:880,eos:987.77,lym:1046.5};
 const VIB={band:[14],lym:[8],eos:[8,40,8],seg:[22],mono:[8,40,8,40,8],baso:[32],otras:[16,40,16],nrbc:[36,30,10]};
 function pluck(freq,when=0,dur=.35,vol=.16){
+  if(!AJ.sound)return;
   try{
     audio();
     const t=ac.currentTime+when+(ac.state==="running"?0:.04);
@@ -609,12 +778,14 @@ function audio(){
   if(ac.state!=="running"&&ac.resume)ac.resume().catch(()=>{});
   return ac;
 }
-try{if(navigator.audioSession)navigator.audioSession.type="playback";}catch(e){}
+function applyAudioSession(){try{if(navigator.audioSession)navigator.audioSession.type=AJ.silent?"playback":"ambient";}catch(e){}}
+applyAudioSession();
 document.addEventListener("visibilitychange",()=>{if(!document.hidden&&ac&&ac.state!=="running")ac.resume().catch(()=>{});});
 /* Vista mecánica: golpe de tecla de máquina de escribir y campana */
 let noiseBuf=null;
 function noise(){const a=audio();if(!noiseBuf){const n=Math.floor(a.sampleRate*.25);noiseBuf=a.createBuffer(1,n,a.sampleRate);const d=noiseBuf.getChannelData(0);for(let i=0;i<n;i++)d[i]=Math.random()*2-1;}return noiseBuf;}
 function clack(pitch=1){
+  if(!AJ.sound)return;
   try{
     const a=audio(),t=a.currentTime+(a.state==="running"?0:.04);
     const src=a.createBufferSource();src.buffer=noise();
@@ -632,6 +803,7 @@ function clack(pitch=1){
   }catch(e){}
 }
 function bell(){
+  if(!AJ.sound)return;
   try{
     const a=audio(),t=a.currentTime+.05;
     [[2093,.22],[5280,.07],[3140,.05]].forEach(([f,v])=>{const o=a.createOscillator(),g=a.createGain();o.type="sine";o.frequency.value=f;
@@ -795,8 +967,8 @@ const ARTURL=(()=>{const A=CellArt.build(),o={};for(const k in A)o[k]={full:"dat
 
 /* Botones de células */
 const cellsEl=$("cells");
-/* Acomodo tipo teclado numérico: 7 8 9 / 4 5 6 / 1 2 3 */
-const LAYOUT=["baso","otras","nrbc","eos","seg","mono","band","lym","undo"];
+/* Acomodo tipo teclado numérico: 7 8 9 / 4 5 6 / 1 2 3 (raras abajo) */
+const LAYOUT=["baso","eos","lym","seg","band","mono","otras","nrbc","undo"];
 LAYOUT.map(id=>id==="undo"?{id:"undo"}:CELLS.find(c=>c.id===id)).forEach(c=>{
   if(c.id==="undo"){
     const u=document.createElement("button");u.type="button";u.className="undo-cell";u.id="undo";
@@ -869,13 +1041,28 @@ macro:S(rbc(13,20,8)+`<circle cx="28" cy="21" r="7" fill="#B79BDB" stroke="#8C6D
 "Babesia bovis":S(rbc(20,20,13)+pear(16.5,21,-65,.85)+pear(23.5,21,65,.85)),
 "Babesia bigemina":S(rbc(20,20,14,{p:"#F2D3CD"})+pear(17,20,-20,1.3)+pear(23,20,20,1.3)),
 "Theileria spp.":S(rbc(20,20,13)+`<path d="M15 15 l3 1.5 M23 14 l1.5 3 M14 24 l3 -1 M24 25 a1.6 1.6 0 1 0 .1 0" stroke="${NU}" stroke-width="1.3" stroke-linecap="round" fill="none"/>`),
+equino:S(`<path d="${(()=>{let d="";for(let i=0;i<16;i++){const a=i/16*Math.PI*2,r=i%2?10.5:13;d+=(i?"L":"M")+(20+Math.cos(a)*r).toFixed(1)+" "+(20+Math.sin(a)*r).toFixed(1);}return d+"Z";})()}" fill="${RB}" stroke="${RBs}" stroke-width=".8" stroke-linejoin="round"/><circle cx="20" cy="20" r="4.5" fill="${RBp}"/>`),
+drepano:S(`<path d="M7 26 C9 13 24 6 34 12 C26 11 15 16 12 27 Z" fill="${RB}" stroke="${RBs}" stroke-width=".8" stroke-linejoin="round"/>`),
+dacrio:S(`<path d="M20 6 C22 12 30 18 30 25 C30 31 25 35 20 35 C15 35 10 31 10 25 C10 18 18 12 20 6Z" fill="${RB}" stroke="${RBs}" stroke-width=".8"/><circle cx="20" cy="26" r="3.6" fill="${RBp}"/>`),
+elipto:S(`<ellipse cx="14" cy="20" rx="6" ry="12" fill="${RB}" stroke="${RBs}" stroke-width=".8"/><ellipse cx="14" cy="20" rx="2" ry="5" fill="${RBp}"/><ellipse cx="28" cy="20" rx="6" ry="11" transform="rotate(20 28 20)" fill="${RB}" stroke="${RBs}" stroke-width=".8"/>`),
+"Plasmodium spp.":S(rbc(14,15,9.5,{p:"#F2D3CD"})+`<circle cx="12.5" cy="13.5" r="2.6" fill="none" stroke="${NU}" stroke-width="1.1"/><circle cx="14.4" cy="12" r="1" fill="#B0306A"/>`+`<path d="M18 33 C20 24 33 22 37 29 C33 26 24 26 21 34Z" fill="#9A82C9" stroke="${NU}" stroke-width=".7"/><circle cx="28" cy="27.5" r="1.3" fill="#B0306A"/>`),
+"Babesia spp.":S(rbc(20,20,13)+`<circle cx="17" cy="17" r="2.6" fill="none" stroke="${NU}" stroke-width="1.1"/><circle cx="18.6" cy="15.6" r=".9" fill="${NU}"/>`+dots([[24,22.5],[26.5,25],[24,27.5],[21.5,25]],1.2,"#6E4C9E")),
+"Borrelia spp.":S(rbc(9,30,6.5)+rbc(31,9,6)+`<path d="M5 18 q3 -5 6 0 t6 0 t6 0 t6 0 t6 0" stroke="${NU}" stroke-width="1.6" fill="none" stroke-linecap="round"/>`),
+retiAgg:S(rbc(20,20,14,{np:1,f:"#E9B5AD"})+`<path d="M12 15 L16 18 L14 22 M18 12 L19 17 L23 19 L27 16 M21 23 L25 26 L22 29 M16 25 L19 27 M26 21 L29 23" stroke="#2F5FB3" stroke-width="1.4" fill="none" stroke-linecap="round"/>`+dots([[16,18],[23,19],[25,26],[14,22],[19,27]],1.2,"#2F5FB3")),
+retiPunt:S(rbc(20,20,14,{np:1,f:"#E9B5AD"})+dots([[14,16],[22,13],[27,20],[18,24],[24,27],[13,25]],1.3,"#3B6CC0")),
+rbcMat:S(rbc(20,20,14)),
 "Otro hemoparásito":S(rbc(20,20,13)+`<text x="20" y="25" text-anchor="middle" font-size="14" font-weight="700" fill="${NU}" font-family="system-ui,sans-serif">?</text>`)
 };
 return I;})();
 
+let MGROUP="Eritrocitos";
 function renderMorph(){
   const mo=S.mo||{};
-  $("morph").innerHTML=MORPH.map(gp=>`<h3 class="mgroup">${gp.g}</h3>`+gp.items.map(it=>{
+  const nMarked=gp=>gp.items.filter(it=>mo[it.k]).length;
+  const tabs=MORPH.map(gp=>({id:gp.g,label:{Eritrocitos:"Serie roja",Leucocitos:"Serie blanca",Plaquetas:"Plaquetas"}[gp.g]||gp.g,n:nMarked(gp)})).concat([{id:"Notas",label:"Notas",n:S.notas.trim()?1:0}]);
+  $("msub").innerHTML=tabs.map(t=>`<button type="button" role="tab" data-mg="${t.id}" aria-selected="${t.id===MGROUP}">${t.label}${t.n?`<b>${t.id==="Notas"?"•":t.n}</b>`:""}</button>`).join("");
+  $("notas").hidden=MGROUP!=="Notas";
+  $("morph").innerHTML=MGROUP==="Notas"?`<p class="note">Notas generales del frotis; pasan al final del reporte.</p>`:MORPH.filter(gp=>gp.g===MGROUP).map(gp=>`<p class="note">Marca el grado observado; toca otra vez para quitarlo.</p>`+gp.items.filter(it=>!it.sp||it.sp.includes(S.especie)||mo[it.k]).map(it=>{
     const v=mo[it.k];
     const ctl=it.type==="est"
       ?`<div class="grade est" role="group" aria-label="${it.n}">${Object.keys(EST).map(o=>`<button type="button" data-m="${it.k}" data-g="${o}" aria-pressed="${v===o}">${{dism:"Baja",adec:"Normal",aum:"Alta"}[o]}</button>`).join("")}</div>`
@@ -884,6 +1071,7 @@ function renderMorph(){
     return `<div class="pz${v?" on":""}"><span class="ico">${ICONS[it.k]||""}</span><div class="pz-name">${it.n}<span class="sub">${it.s}</span></div>${ctl}</div>${conf}`;
   }).join("")).join("");
 }
+$("msub").addEventListener("click",e=>{const b=e.target.closest("button[data-mg]");if(!b)return;MGROUP=b.dataset.mg;renderMorph();$("mpanel").scrollTop=0;});
 $("morph").addEventListener("click",e=>{
   const b=e.target.closest("button");if(!b)return;
   S.mo=S.mo||{};
@@ -893,7 +1081,18 @@ $("morph").addEventListener("click",e=>{
   save();render();
 });
 
+$("wbcbox").addEventListener("animationend",()=>$("wbcbox").classList.remove("deny"));
+function needWBC(el){
+  if(String(S.wbc||"").trim())return false;
+  const box=$("wbcbox");box.classList.remove("deny");void box.offsetWidth;box.classList.add("deny");
+  if(el){el.classList.remove("deny");void el.offsetWidth;el.classList.add("deny");}
+  $("status").textContent="Primero anota el WBC del equipo";
+  pluck(261.63,0,.18,.12);buzz([40,40,40]);
+  setTimeout(()=>$("wbc2").focus(),60);
+  return true;
+}
 function tap(id,el,ev){
+  if(needWBC(el))return;
   if(total()>=S.meta){
     $("status").textContent=S.meta===100?"Completo. Toca Nuevo o 200":"Completo. Toca Nuevo";
     if(el){el.classList.remove("deny");void el.offsetWidth;el.classList.add("deny");}
@@ -971,7 +1170,7 @@ function celebrate(){
 }
 /* Easter eggs: melodías de dominio público. Do=Bandas, Re=Linfocitos, Mi=Eosinófilos, Fa=Neutrófilos,
    Sol=Monocitos, La=Basófilos, Si=Otras, Do agudo (c)=nRBC. Cada nota: letra + duración en tiempos. */
-const N2C={C:"band",D:"lym",E:"eos",F:"seg",G:"mono",A:"baso",B:"otras",c:"nrbc"};
+const N2C={C:"otras",D:"nrbc",E:"seg",F:"band",G:"mono",A:"baso",B:"eos",c:"lym"};
 const SONGS=[
   {name:"London Bridge",q:.36,trig:"G A G F E F G",
    notes:"G.75 A.25 G.5 F.5 E.5 F.5 G1 D.5 E.5 F1 E.5 F.5 G1 G.75 A.25 G.5 F.5 E.5 F.5 G1 D1 G1 E.5 C1.5"},
@@ -1012,7 +1211,7 @@ function playEgg(s){
   setTimeout(()=>{eggPlaying=false;render();},t*1000+400);
 }
 function undo(){const id=S.hist.pop();if(!id)return;if(typeof VISTA!=="undefined"&&VISTA==="mech")clack(.65);else{pluck(523.25,0,.14,.11);pluck(392,.07,.22,.11);}buzz([10,30,10]);glow($("undo"));S.counts[id]--;save();render();}
-const hasData=(st=S)=>total(st)>0||(st.counts.nrbc||0)>0||!!st.paciente||!!st.notas.trim()||(st.morf||[]).length>0||Object.keys(st.mo||{}).length>0||Object.keys(st.paras).length>0||st.parasNone;
+const hasData=(st=S)=>total(st)>0||(st.counts.nrbc||0)>0||!!st.paciente||!!st.notas.trim()||(st.morf||[]).length>0||Object.keys(st.mo||{}).length>0||Object.keys(st.paras).length>0||st.parasNone||rtTot(st).n>0;
 function archive(){
   if(!hasData())return false;
   const rec=JSON.parse(JSON.stringify(S));delete rec.hist;
@@ -1029,10 +1228,10 @@ function armTap(btn,label,armed,action){
 }
 function startNew(){
   const ok=archive();
-  const keep={especie:S.especie,meta:S.meta};
-  S={sid:newSid(),inicio:null,paciente:"",especie:keep.especie,wbc:"",meta:keep.meta,counts:{},hist:[],morf:[],mo:{},notas:"",paras:{},parasNone:false,interp:"",interpOn:false};
+  const keep={especie:AJ.especie,meta:AJ.meta};
+  S={sid:newSid(),inicio:null,paciente:"",especie:keep.especie,wbc:"",meta:keep.meta,counts:{},hist:[],morf:[],mo:{},notas:"",paras:{},parasNone:false,interp:"",interpOn:false,rt:RT0()};
   CELLS.forEach(c=>S.counts[c.id]=0);
-  $("paciente").value="";$("wbc").value="";$("notas").value="";$("interp").value="";$("imsg").textContent="";$("iagain").hidden=true;
+  $("paciente").value="";$("wbc").value="";$("notas").value="";$("interp").value="";$("especie").value=S.especie;$("imsg").textContent="";$("iagain").hidden=true;
   save();render();renderHist();
   $("status").textContent=ok?"Guardado en historial. Conteo nuevo listo":"Conteo nuevo listo";
 }
@@ -1054,8 +1253,7 @@ const GR=["","escasos","moderados","abundantes"];
 const PARAS={
  Canino:[["Babesia spp. grandes","<em>Babesia</em> spp. grandes","B. canis / B. vogeli, en eritrocitos"],["Babesia spp. pequeñas","<em>Babesia</em> spp. pequeñas","B. gibsoni, en eritrocitos"],["Ehrlichia spp.","<em>Ehrlichia</em> spp.","mórulas en monocitos o linfocitos"],["Anaplasma platys","<em>Anaplasma platys</em>","inclusiones en plaquetas"],["Anaplasma phagocytophilum","<em>Anaplasma phagocytophilum</em>","mórulas en neutrófilos"],["Hepatozoon canis","<em>Hepatozoon canis</em>","gamontes en neutrófilos"],["Mycoplasma haemocanis","<em>Mycoplasma haemocanis</em>","en la superficie de eritrocitos"],["Trypanosoma cruzi","<em>Trypanosoma cruzi</em>","tripomastigotes libres"],["Microfilarias","Microfilarias","Dirofilaria u otras filarias"]],
  Felino:[["Mycoplasma haemofelis","<em>Mycoplasma haemofelis</em>","en la superficie de eritrocitos"],["Cytauxzoon felis","<em>Cytauxzoon felis</em>","merozoitos en eritrocitos"],["Anaplasma phagocytophilum","<em>Anaplasma phagocytophilum</em>","mórulas en neutrófilos"],["Trypanosoma spp.","<em>Trypanosoma</em> spp.","tripomastigotes libres"]],
- Equino:[["Theileria equi","<em>Theileria equi</em>","en eritrocitos"],["Babesia caballi","<em>Babesia caballi</em>","en eritrocitos"],["Anaplasma phagocytophilum","<em>Anaplasma phagocytophilum</em>","mórulas en neutrófilos"],["Trypanosoma spp.","<em>Trypanosoma</em> spp.","tripomastigotes libres"]],
- Bovino:[["Anaplasma marginale","<em>Anaplasma marginale</em>","en el margen de eritrocitos"],["Babesia bovis","<em>Babesia bovis</em>","en eritrocitos"],["Babesia bigemina","<em>Babesia bigemina</em>","en eritrocitos"],["Theileria spp.","<em>Theileria</em> spp.","en eritrocitos"],["Trypanosoma spp.","<em>Trypanosoma</em> spp.","tripomastigotes libres"]]
+ Humano:[["Plasmodium spp.","<em>Plasmodium</em> spp.","trofozoítos, esquizontes o gametocitos en eritrocitos"],["Babesia spp.","<em>Babesia</em> spp.","B. microti y otras, en eritrocitos"],["Trypanosoma cruzi","<em>Trypanosoma cruzi</em>","tripomastigotes libres"],["Microfilarias","Microfilarias","Wuchereria, Brugia, Loa loa, Mansonella"],["Borrelia spp.","<em>Borrelia</em> spp.","espiroquetas libres (fiebre recurrente)"]]
 };
 const OTRO=["Otro hemoparásito","Otro hemoparásito","especifícalo en las notas"];
 const ALLP=()=>{const seen=new Set(),out=[];Object.values(PARAS).flat().forEach(p=>{if(!seen.has(p[0])){seen.add(p[0]);out.push(p);}});return out;};
@@ -1078,12 +1276,14 @@ function render(){
   $("bar").classList.toggle("done",done);
   $("bar").firstElementChild.style.width=Math.min(100,t/S.meta*100)+"%";
   const st=$("status");st.classList.toggle("done",done);
-  st.textContent=done?"Listo":`Faltan ${S.meta-t}`;
+  st.textContent=done?"Listo":(!String(S.wbc||"").trim()&&t===0?"Anota el WBC para empezar":`Faltan ${S.meta-t}`);
   const w1=$("wbc"),w2=$("wbc2");
   if(document.activeElement!==w1)w1.value=S.wbc||"";
   if(document.activeElement!==w2)w2.value=S.wbc||"";
   $("wbcbox").classList.toggle("empty",!String(S.wbc||"").trim());
-  $("toRes").classList.toggle("primary",done);
+  $("tabRes").classList.toggle("ready",done);
+  $("paraSp").textContent=S.especie;
+  renderRetis();
   document.querySelectorAll(".seg-ctl button").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.meta===S.meta)));
 
   let rows="";
@@ -1096,15 +1296,16 @@ function render(){
     const pct=t?n*100/t:NaN;
     $("p-"+c.id).textContent=t?fmt(pct,1)+" %":"";
     const abs=pct*wbcCorr/100;
-    rows+=`<tr><td><span class="tc"><img class="thumb" src="${ARTURL[c.id].clean}" alt="">${LONG[c.id]}</span></td><td>${n}</td><td>${t?fmt(pct,1):"—"}</td><td>${Number.isFinite(wbcCorr)&&t?fmt(abs,2):"—"}</td></tr>`;
+    rows+=`<tr><td><span class="tc"><img class="thumb" src="${ARTURL[c.id].clean}" alt="">${LONG[c.id]}</span></td><td>${n}</td><td>${t?fmt(pct,1):"—"}</td><td>${Number.isFinite(wbcCorr)&&t?absNum(abs):"—"}</td></tr>`;
   });
   rows+=`<tr><td><span class="tc"><img class="thumb" src="${ARTURL.nrbc.clean}" alt="">nRBC (por 100 leucocitos)</span></td><td>${S.counts.nrbc}</td><td>${t?fmt(nrbc100,1):"—"}</td><td></td></tr>`;
-  rows+=`<tr class="total"><td>Total leucocitos</td><td>${t}</td><td>${t?"100.0":"—"}</td><td>${Number.isFinite(wbcCorr)?fmt(wbcCorr,2):"—"}</td></tr>`;
+  rows+=`<tr class="total"><td>Total leucocitos</td><td>${t}</td><td>${t?"100.0":"—"}</td><td>${Number.isFinite(wbcCorr)?absNum(wbcCorr):"—"}</td></tr>`;
+  $("thAbs").textContent=absU();
   $("tbody").innerHTML=rows;
 
   let note="";
   if(!Number.isFinite(wbc))note="Escribe el WBC del equipo para calcular los valores absolutos.";
-  else if(S.counts.nrbc>0)note=`Corrección por nRBC: ${fmt(wbc,2)} × 100 / (100 + ${fmt(nrbc100,1)}) = ${fmt(wbcCorr,2)} ×10⁹/L. Los absolutos usan el WBC corregido.`;
+  else if(S.counts.nrbc>0)note=`Corrección por nRBC: ${fmt(wbc,2)} × 100 / (100 + ${fmt(nrbc100,1)}) = ${absStr(wbcCorr)}. Los absolutos usan el WBC corregido.`;
   else note="Sin nRBC: los absolutos usan el WBC del equipo.";
   $("wbcnote").textContent=note;
 
@@ -1127,17 +1328,19 @@ function buildText(st=S){
   if(st.inicio)L.push(`Fecha: ${new Date(st.inicio).toLocaleString("es-MX",{dateStyle:"medium",timeStyle:"short"})}`);
   L.push(`Paciente: ${st.paciente||"sin nombre"} (${st.especie})`);
   L.push(`Células contadas: ${t}`);
-  if(Number.isFinite(wbc))L.push(`WBC equipo: ${fmt(wbc,2)} ×10⁹/L`);
+  if(Number.isFinite(wbc))L.push(`WBC equipo: ${absStr(wbc)}`);
   if((st.counts.nrbc||0)>0){
-    L.push(`nRBC: ${fmt(nrbc100,1)} por cada 100 leucocitos`);
-    if(Number.isFinite(wbcCorr))L.push(`WBC corregido: ${fmt(wbcCorr,2)} ×10⁹/L`);
+    L.push(`nRBC: ${st.counts.nrbc||0} (${fmt(nrbc100,1)} por cada 100 leucocitos)`);
+    if(Number.isFinite(wbcCorr))L.push(`WBC corregido: ${absStr(wbcCorr)}`);
   }
   L.push("");
   CELLS.filter(c=>c.id!=="nrbc").forEach(c=>{
     const n=st.counts[c.id]||0;const pct=t?n*100/t:NaN;
-    const abs=Number.isFinite(wbcCorr)?` (${fmt(pct*wbcCorr/100,2)} ×10⁹/L)`:"";
-    L.push(`${LONG[c.id]}: ${t?fmt(pct,1):"—"} %${t?abs:""}`);
+    const abs=Number.isFinite(wbcCorr)&&t?`; ${absStr(pct*wbcCorr/100)}`:"";
+    L.push(`${LONG[c.id]}: ${n} (${t?fmt(pct,1):"—"} %${abs})`);
   });
+  const rl=rtLines(st);
+  if(rl.length){L.push("");rl.forEach(x=>L.push(x));}
   const mg=morphGroups(st);
   if(mg.length){L.push("");mg.forEach(([l,t])=>L.push(`${l}: ${t}.`));}
   const pk=Object.keys(st.paras);
@@ -1149,16 +1352,16 @@ function buildText(st=S){
 }
 
 /* Vistas */
+const VIEWS={conteo:"count",parasitos:"para",resultado:"res",historial:"hist",ajustes:"set"};
+function curView(){return VIEWS[location.hash.replace("#","")]||"count";}
 function showView(){
-  const v=location.hash==="#resultado"?"res":location.hash==="#historial"?"hist":location.hash==="#ajustes"?"set":"count";
-  $("v-count").classList.toggle("active",v==="count");
-  $("v-res").classList.toggle("active",v==="res");
-  $("v-hist").classList.toggle("active",v==="hist");
-  $("v-set").classList.toggle("active",v==="set");
+  const v=curView();
+  ["count","para","res","hist","set"].forEach(x=>$("v-"+x).classList.toggle("active",v===x));
   document.body.classList.toggle("counting",v==="count");
+  const tab={count:"conteo",para:"parasitos",res:"resultado",hist:"historial"}[v];
+  document.querySelectorAll("#tabbar button").forEach(b=>{if(b.dataset.tab===tab)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
   if(v!=="count")window.scrollTo(0,0);
   if(v==="hist")renderHist();
-  if(v==="res")setTimeout(markJump,0);
 }
 const fdate=t=>new Date(t).toLocaleString("es-MX",{dateStyle:"medium",timeStyle:"short"});
 function renderHist(){
@@ -1168,15 +1371,17 @@ function renderHist(){
 }
 function csvAll(){
   const q=v=>`"${String(v??"").replace(/"/g,'""')}"`;
-  const cols=["Fecha","Paciente","Especie","Células","WBC equipo","WBC corregido","nRBC/100"];
-  CELLS.filter(c=>c.id!=="nrbc").forEach(c=>cols.push(LONG[c.id]+" %",LONG[c.id]+" ×10⁹/L"));
-  cols.push("Morfología","Hemoparásitos","Notas");
+  const cols=["Fecha","Paciente","Especie","Células","WBC equipo","WBC corregido","nRBC (n)","nRBC/100"];
+  CELLS.filter(c=>c.id!=="nrbc").forEach(c=>cols.push(LONG[c.id]+" (n)",LONG[c.id]+" %",LONG[c.id]+" "+absU()));
+  cols.push("Eritrocitos contados (retis)","Reticulocitos (n)","Retis %","Retis "+absU(),"Retis corregido %","IPR","Punteados (n)","Punteados %","Morfología","Hemoparásitos","Notas");
   const rows=[cols.map(q).join(",")];
   H.forEach(r=>{
     const {t,wbc,nrbc100,wbcCorr}=calc(r);
-    const v=[fdate(r.inicio),r.paciente,r.especie,t,Number.isFinite(wbc)?wbc.toFixed(2):"",Number.isFinite(wbcCorr)?wbcCorr.toFixed(2):"",t?nrbc100.toFixed(1):""];
-    CELLS.filter(c=>c.id!=="nrbc").forEach(c=>{const p=t?(r.counts[c.id]||0)*100/t:NaN;v.push(Number.isFinite(p)?p.toFixed(1):"",Number.isFinite(p)&&Number.isFinite(wbcCorr)?(p*wbcCorr/100).toFixed(2):"");});
+    const v=[fdate(r.inicio),r.paciente,r.especie,t,Number.isFinite(wbc)?wbc.toFixed(2):"",Number.isFinite(wbcCorr)?wbcCorr.toFixed(2):"",r.counts.nrbc||0,t?nrbc100.toFixed(1):""];
+    CELLS.filter(c=>c.id!=="nrbc").forEach(c=>{const p=t?(r.counts[c.id]||0)*100/t:NaN;v.push(r.counts[c.id]||0,Number.isFinite(p)?p.toFixed(1):"",Number.isFinite(p)&&Number.isFinite(wbcCorr)?absNum(p*wbcCorr/100).replace(/,/g,""):"");});
     const pk=Object.keys(r.paras||{});
+    const rc=rtCalc(r),f1=x=>Number.isFinite(x)?x.toFixed(1):"";
+    v.push(rc.n||"",rc.n?rc.agg:"",rc.n?f1(rc.pA):"",rc.n&&Number.isFinite(rc.absA)?absNum(rc.absA,1).replace(/,/g,""):"",rc.n?f1(rc.corr):"",Number.isFinite(rc.ipr)?rc.ipr.toFixed(2):"",r.especie==="Felino"&&rc.n?rc.punt:"",r.especie==="Felino"&&rc.n?f1(rc.pP):"");
     v.push(morphText(r),pk.length?pk.map(k=>`${k} (${GR[r.paras[k]]})`).join("; "):(r.parasNone?"No observados":""),r.notas||"");
     rows.push(v.map(q).join(","));
   });
@@ -1188,10 +1393,13 @@ async function copyText(txt,msgEl,ta){
   else msgEl.textContent="No se pudo copiar en este navegador.";
 }
 window.addEventListener("hashchange",showView);
-$("toRes").addEventListener("click",()=>{location.hash="resultado";});
-$("toCount").addEventListener("click",()=>{location.hash="conteo";});
-$("toCount2").addEventListener("click",()=>{location.hash="conteo";});
-$("toHist").addEventListener("click",()=>{location.hash="historial";});
+$("tabbar").addEventListener("click",e=>{const b=e.target.closest("button[data-tab]");if(b)location.hash=b.dataset.tab;});
+$("paraChg").addEventListener("click",()=>{location.hash="resultado";setTimeout(()=>{$("especie").focus();},150);});
+/* Modos de la pantalla de conteo */
+let MODE="conteo";
+function setMode(m){MODE=m;$("v-count").dataset.mode=m;document.querySelectorAll(".mode-ctl button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mode===m)));}
+document.querySelector(".mode-ctl").addEventListener("click",e=>{const b=e.target.closest("button[data-mode]");if(b)setMode(b.dataset.mode);});
+setMode("conteo");
 $("saveH").addEventListener("click",()=>{const ok=archive();$("copymsg").textContent=ok?"Guardado en historial.":(hasData()?"No se pudo guardar.":"No hay datos que guardar.");renderHist();});
 $("csv").addEventListener("click",()=>{if(!H.length){$("histmsg").textContent="No hay conteos guardados.";return;}const ta=document.createElement("textarea");ta.value=csvAll();ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);copyText(ta.value,$("histmsg"),ta).finally(()=>ta.remove());});
 $("hlist").addEventListener("click",e=>{
@@ -1202,6 +1410,7 @@ $("hlist").addEventListener("click",e=>{
   if(b.dataset.load!==undefined){
     const r=H[+b.dataset.load];archive();
     S=Object.assign(JSON.parse(JSON.stringify(r)),{hist:[]});
+    if(!S.rt||!S.rt.cur)S.rt=RT0();
     if(!S.mo)S.mo={};
     if(Array.isArray(S.morf)&&S.morf.length){S.morf.forEach(m=>{if(LEGACY[m]&&!S.mo[LEGACY[m]])S.mo[LEGACY[m]]=1;});S.morf=[];}delete S.guardado;
     CELLS.forEach(c=>{if(typeof S.counts[c.id]!=="number")S.counts[c.id]=0;});
@@ -1228,13 +1437,14 @@ let skipTap=false;
 $("wbc2").addEventListener("input",e=>{S.wbc=e.target.value;save();render();});
 $("wbc2").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();e.target.blur();}});
 $("cells").addEventListener("pointerdown",()=>{const w=$("wbc2");if(document.activeElement===w){skipTap=true;w.blur();setTimeout(()=>{skipTap=false;},700);}},true);
-$("notas").addEventListener("input",e=>{S.notas=e.target.value;save();syncOut();});
+$("notas").addEventListener("input",e=>{const had=!!S.notas.trim();S.notas=e.target.value;save();syncOut();if(had!==!!S.notas.trim())renderMorph();});
 $("undo").addEventListener("click",undo);
 $("reset").addEventListener("click",reset);
 $("copy").addEventListener("click",()=>copyText(buildText(),$("copymsg"),$("out")));
 /* Compartir: hoja de compartir del sistema (WhatsApp, Mensajes, correo…) o enlace directo a WhatsApp */
 function shareText(st=S){
   return buildText(st).replace(/^DIFERENCIAL LEUCOCITARIO/,"*DIFERENCIAL LEUCOCITARIO*")
+    .replace(/^(RETICULOCITOS.*)$/m,"*$1*")
     .replace(/^(Paciente:|Morfología eritrocitaria:|Morfología leucocitaria:|Plaquetas:|Hemoparásitos:|Interpretación:)/gm,"*$1*");
 }
 function waUrl(t){return "https://wa.me/?text="+encodeURIComponent(t);}
@@ -1252,7 +1462,7 @@ $("wa").addEventListener("pointerdown",e=>{e.currentTarget.href=waUrl(shareText(
 $("wa").addEventListener("click",e=>{e.currentTarget.href=waUrl(shareText());archive();renderHist();});
 document.addEventListener("keydown",e=>{
   if(!$("sheet").hidden){if(e.key==="Escape")closeSheet();return;}
-  if(location.hash==="#resultado"||location.hash==="#historial"||location.hash==="#ajustes")return;
+  if(curView()!=="count"||MODE!=="conteo")return;
   const tag=(e.target.tagName||"").toLowerCase();
   if(tag==="input"||tag==="textarea"||tag==="select")return;
   const c=CELLS.find(x=>x.key===e.key);
@@ -1279,6 +1489,7 @@ ${lines}
 - Morfología: ${morphText(S)||"sin hallazgos marcados"}
 - Hemoparásitos: ${pk.length?pk.map(k=>`${k} (${GR[S.paras[k]]})`).join(", "):(S.parasNone?"no se observaron":"no evaluado")}
 - Notas del frotis: ${S.notas.trim()||"ninguna"}
+- Reticulocitos: ${rtLines(S).slice(1).join("; ")||"no evaluados"}
 
 Instrucciones:
 - Escribe en español, en prosa, sin viñetas, sin títulos y sin Markdown; de 3 a 6 oraciones, unas 120 palabras como máximo.
@@ -1353,6 +1564,7 @@ function openSheet(id){
 }
 function closeSheet(){$("sheet").hidden=true;shId=null;}
 function addMany(id,n){
+  if(!String(S.wbc||"").trim())return {ok:false,msg:"Primero anota el WBC del equipo."};
   n=Math.floor(n);
   if(!(n>0))return {ok:false,msg:"Escribe un número mayor que cero."};
   const t=total();
@@ -1385,6 +1597,7 @@ function setCount(id,v){
   if(!(v>=0))return {ok:false,msg:"Escribe un número válido."};
   const cur=S.counts[id],name=LONG[id]||"nRBC";
   if(v===cur)return {ok:true,msg:""};
+  if(v>cur&&!String(S.wbc||"").trim())return {ok:false,msg:"Primero anota el WBC del equipo."};
   const el=document.querySelector(`.cell[data-id="${id}"]`);
   if(v>cur){
     const before=total();
@@ -1419,32 +1632,147 @@ $("shClear").addEventListener("click",()=>armTap($("shClear"),"Borrar conteo","�
 $("shCancel").addEventListener("click",closeSheet);
 $("sheet").addEventListener("click",e=>{if(e.target===$("sheet"))closeSheet();});
 
-/* Accesos directos en Resultado */
-const JUMPS=["sec-conteo","sec-morf","sec-para","isec","sec-rep"];
-function markJump(){
-  if(location.hash!=="#resultado")return;
-  const off=$("v-res").querySelector(".topbar").getBoundingClientRect().bottom+12;
-  const vis=JUMPS.filter(id=>{const el=$(id);return el&&!el.hidden;});
-  let cur=vis[0];
-  vis.forEach(id=>{if($(id).getBoundingClientRect().top<=off)cur=id;});
-  if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-4)cur=vis[vis.length-1];
-  document.querySelectorAll("#jump button").forEach(b=>b.setAttribute("aria-current",String(b.dataset.to===cur)));
+/* Reticulocitos por campo */
+const HCTN={Canino:45,Felino:37,Humano:45};
+function rtTot(st=S){
+  const r=(st.rt&&st.rt.cur)?st.rt:RT0();
+  const s={mat:0,agg:0,punt:0};
+  [...r.fields,r.cur].forEach(x=>{s.mat+=x.mat||0;s.agg+=x.agg||0;s.punt+=x.punt||0;});
+  s.n=s.mat+s.agg+s.punt;
+  const curUsed=(r.cur.mat||r.cur.agg||r.cur.punt)?1:0;
+  s.campos=r.fields.length+curUsed;s.campoAct=r.fields.length+1;
+  return s;
 }
-window.addEventListener("scroll",markJump,{passive:true});
-$("jump").addEventListener("click",e=>{
-  const b=e.target.closest("button[data-to]");if(!b)return;
-  const el=$(b.dataset.to);if(!el)return;
-  const smooth=!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches);
-  el.scrollIntoView({behavior:smooth?"smooth":"auto",block:"start"});
-});
-new MutationObserver(()=>{$("jInterp").hidden=$("isec").hidden;}).observe($("isec"),{attributes:true,attributeFilter:["hidden"]});
-$("jInterp").hidden=$("isec").hidden;
+function rtCalc(st=S){
+  const t=rtTot(st),num=v=>parseFloat(String(v??"").replace(",","."));
+  const rbc=num(st.rt&&st.rt.rbc),hct=num(st.rt&&st.rt.hct);
+  const pA=t.n?t.agg*100/t.n:NaN,pP=t.n?t.punt*100/t.n:NaN;
+  const absA=Number.isFinite(rbc)&&t.n?pA/100*rbc*1000:NaN,absP=Number.isFinite(rbc)&&t.n?pP/100*rbc*1000:NaN;
+  const hn=HCTN[st.especie]||45,corr=Number.isFinite(hct)&&t.n?pA*hct/hn:NaN;
+  let ipr=NaN;
+  if(st.especie==="Humano"&&Number.isFinite(corr)){const mf=hct>=40?1:hct>=30?1.5:hct>=20?2:2.5;ipr=corr/mf;}
+  return Object.assign(t,{pA,pP,absA,absP,corr,ipr,rbc,hct,hn});
+}
+function rtLines(st=S){
+  const c=rtCalc(st);if(!c.n)return [];
+  const cat=st.especie==="Felino",L=[];
+  L.push(`RETICULOCITOS (${c.n} eritrocitos en ${c.campos} ${c.campos===1?"campo":"campos"})`);
+  L.push(`${cat?"Reticulocitos agregados":"Reticulocitos"}: ${c.agg} (${fmt(c.pA,1)} %`+(Number.isFinite(c.absA)?`; ${absStr(c.absA,1)}`:"")+")");
+  if(cat)L.push(`Reticulocitos punteados: ${c.punt} (${fmt(c.pP,1)} %`+(Number.isFinite(c.absP)?`; ${absStr(c.absP,1)}`:"")+")");
+  if(Number.isFinite(c.corr))L.push(`Porcentaje corregido (Hto ${fmt(c.hct,0)} %, referencia ${c.hn} %): ${fmt(c.corr,1)} %`);
+  if(Number.isFinite(c.ipr))L.push(`Índice de producción reticulocitaria: ${fmt(c.ipr,2)}`);
+  return L;
+}
+const RTNOTE={agg:880,punt:987.77,mat:587.33};
+function rtTap(kind,el){
+  if(!S.inicio)S.inicio=Date.now();
+  const before=rtTot().n;
+  S.rt.cur[kind]=(S.rt.cur[kind]||0)+1;S.rt.hist.push(kind);
+  if(typeof VISTA!=="undefined"&&VISTA==="mech")clack(kind==="mat"?.9:1.1);else pluck(RTNOTE[kind],0,.25,.14);
+  buzz(kind==="mat"?8:[10,30,10]);
+  if(el){el.classList.remove("flash");void el.offsetWidth;el.classList.add("flash");}
+  if(before<1000&&before+1>=1000){fin();$("status").textContent="Retis: 1000 eritrocitos";}
+  save();render();
+}
+function rtNext(){
+  const c=S.rt.cur;
+  if(!(c.mat||c.agg||c.punt)){$("rtHint").textContent="Este campo todavía está vacío.";return;}
+  S.rt.fields.push(c);S.rt.cur={mat:0,agg:0,punt:0};S.rt.hist.push("campo");
+  clack(.8);buzz(15);save();render();
+}
+function rtUndo(){
+  const k=S.rt.hist.pop();if(!k)return;
+  if(k==="campo"){S.rt.cur=S.rt.fields.pop()||{mat:0,agg:0,punt:0};}
+  else if(S.rt.cur[k]>0)S.rt.cur[k]--;
+  pluck(392,0,.18,.1);buzz([10,30,10]);save();render();
+}
+function renderRetis(){
+  const c=rtCalc(),cat=S.especie==="Felino";
+  $("rtN").innerHTML=`${c.n}<small> / 1000 eritrocitos</small>`;
+  $("rtCampo").textContent=`Campo ${c.campoAct}`;
+  const bar=$("rtBar");bar.firstElementChild.style.width=Math.min(100,c.n/10)+"%";bar.classList.toggle("done",c.n>=1000);
+  $("rtStats").textContent=c.n?`${cat?"Agregados":"Reticulocitos"} ${fmt(c.pA,1)} %`+(cat?` · Punteados ${fmt(c.pP,1)} %`:"")+(Number.isFinite(c.absA)?` · ${absStr(c.absA,1)}`:"")+(Number.isFinite(c.corr)?` · Corregido ${fmt(c.corr,1)} %`:"")+(Number.isFinite(c.ipr)?` · IPR ${fmt(c.ipr,2)}`:""):"Sin conteo todavía";
+  $("rkAgg").textContent=S.rt.cur.agg;$("rkPunt").textContent=S.rt.cur.punt;$("rkMat").textContent=S.rt.cur.mat;
+  $("rkAggL").textContent=cat?"Agregado":"Reticulocito";
+  $("rkPuntB").hidden=!cat;$("rkeys").classList.toggle("two",!cat);
+  const m=$("rtMat");if(document.activeElement!==m)m.value=S.rt.cur.mat||"";
+  [["rtRbc","rbc"],["rtHct","hct"]].forEach(([id,k])=>{const i=$(id);if(document.activeElement!==i)i.value=S.rt[k]||"";});
+  $("rtHint").textContent=cat?"Azul de metileno nuevo. En gato registra por separado agregados y punteados: solo los agregados reflejan regeneración reciente. Cuenta campos hasta 1000 eritrocitos.":"Azul de metileno nuevo. Toca cada reticulocito y cada eritrocito maduro del campo (o escribe los maduros) y pasa al siguiente campo hasta llegar a 1000 eritrocitos.";
+  const box=$("rtRes");box.hidden=!c.n;
+  if(c.n){
+    const row=(a,b)=>`<tr><td>${a}</td><td>${b}</td></tr>`;
+    $("rtBody").innerHTML=row("Eritrocitos contados",`${c.n} (${c.campos} ${c.campos===1?"campo":"campos"})`)
+      +row(cat?"Agregados":"Reticulocitos",`${c.agg} · ${fmt(c.pA,1)} %`+(Number.isFinite(c.absA)?` · ${absStr(c.absA,1)}`:""))
+      +(cat?row("Punteados",`${c.punt} · ${fmt(c.pP,1)} %`+(Number.isFinite(c.absP)?` · ${absStr(c.absP,1)}`:"")):"")
+      +(Number.isFinite(c.corr)?row("Porcentaje corregido",`${fmt(c.corr,1)} %`):"")
+      +(Number.isFinite(c.ipr)?row("Índice de producción",fmt(c.ipr,2)):"");
+    $("rtNote").textContent=(Number.isFinite(c.rbc)?"":"Escribe los eritrocitos del equipo en la pestaña Retis para el valor absoluto. ")+(Number.isFinite(c.hct)?"":"Escribe el hematocrito para el porcentaje corregido.");
+  }
+}
+const RTICO={rkAggI:"retiAgg",rkPuntI:"retiPunt",rkMatI:"rbcMat"};
+for(const id in RTICO)$(id).innerHTML=ICONS[RTICO[id]];
+$("rkeys").addEventListener("click",e=>{const b=e.target.closest("button[data-rk]");if(b)rtTap(b.dataset.rk,b);});
+$("rtNext").addEventListener("click",rtNext);
+$("rtUndo").addEventListener("click",rtUndo);
+$("rtMat").addEventListener("input",e=>{const v=Math.max(0,Math.floor(+e.target.value||0));if(!S.inicio&&v)S.inicio=Date.now();S.rt.cur.mat=v;save();render();});
+$("rtMat").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();e.target.blur();}});
+$("rtRbc").addEventListener("input",e=>{S.rt.rbc=e.target.value;save();render();});
+$("rtHct").addEventListener("input",e=>{S.rt.hct=e.target.value;save();render();});
+
 /* Ajustes */
 let prevHash="#conteo";
 function openSettings(){prevHash=location.hash||"#conteo";location.hash="ajustes";}
 $("toSet").addEventListener("click",openSettings);
 $("toSet2").addEventListener("click",openSettings);
+$("toSet0").addEventListener("click",openSettings);
+$("toSet3").addEventListener("click",openSettings);
 $("setBack").addEventListener("click",()=>{location.hash=prevHash.replace("#","")||"conteo";});
+
+/* Ajustes: interruptores, valores predeterminados y respaldo */
+function renderAJ(){
+  document.querySelectorAll(".switch[data-set]").forEach(s=>s.setAttribute("aria-checked",String(!!AJ[s.dataset.set])));
+  document.querySelectorAll("#setMeta button").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.v===AJ.meta)));
+  document.querySelectorAll("#setEsp button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===AJ.especie)));
+  document.querySelectorAll("#setUnits button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===AJ.units)));
+}
+document.querySelectorAll(".switch[data-set]").forEach(s=>s.addEventListener("click",()=>{
+  const k=s.dataset.set;AJ[k]=!AJ[k];saveAJ();renderAJ();
+  if(k==="silent")applyAudioSession();
+  if(k==="sound"&&AJ.sound)pluck(698.46);
+  if(k==="vib"&&AJ.vib)buzz(20);
+}));
+$("setMeta").addEventListener("click",e=>{const b=e.target.closest("button[data-v]");if(!b)return;AJ.meta=+b.dataset.v;saveAJ();renderAJ();});
+$("setEsp").addEventListener("click",e=>{const b=e.target.closest("button[data-v]");if(!b)return;AJ.especie=b.dataset.v;saveAJ();renderAJ();});
+$("setUnits").addEventListener("click",e=>{const b=e.target.closest("button[data-v]");if(!b)return;AJ.units=b.dataset.v;saveAJ();renderAJ();render();});
+{const row=$("setUnits").closest(".setrow"),slot=$("unitsRow");slot.replaceWith(row);}
+renderAJ();
+function exportH(){
+  archive();renderHist();
+  const name=`historial-diferencial-${new Date().toISOString().slice(0,10)}.json`;
+  const data=JSON.stringify({app:"contador-diferencial",formato:1,exportado:new Date().toISOString(),historial:H});
+  const blob=new Blob([data],{type:"application/json"});
+  try{
+    const f=new File([blob],name,{type:"application/json"});
+    if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:"Historial del contador"}).then(()=>{$("bkmsg").textContent="Respaldo listo.";}).catch(()=>{});return;}
+  }catch(e){}
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);
+  $("bkmsg").textContent=`Se descargó ${name} con ${H.length} conteos.`;
+}
+$("expH").addEventListener("click",exportH);
+$("impH").addEventListener("click",()=>$("impFile").click());
+$("impFile").addEventListener("change",async e=>{
+  const f=e.target.files[0];if(!f)return;
+  try{
+    const j=JSON.parse(await f.text());const arr=Array.isArray(j)?j:j.historial;
+    if(!Array.isArray(arr))throw new Error("formato");
+    let n=0;
+    arr.forEach(r=>{if(r&&r.sid&&r.counts&&!H.some(x=>x.sid===r.sid)){H.push(r);n++;}});
+    H.sort((a,b)=>(b.inicio||0)-(a.inicio||0));saveH();renderHist();
+    $("bkmsg").textContent=`Se importaron ${n} conteos`+(arr.length-n?`; ${arr.length-n} ya estaban.`:".");
+  }catch(err){$("bkmsg").textContent="El archivo no es un respaldo válido del contador.";}
+  e.target.value="";
+});
 
 /* App sin conexión (solo en GitHub Pages) */
 if("serviceWorker" in navigator&&/github\.io$/.test(location.hostname)){
