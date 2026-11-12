@@ -446,6 +446,53 @@ body.v-mech.counting .bgfx{display:none}
 .mode-ctl,.seg-ctl,.vctl,.grade,.subtabs{padding:3px;gap:2px}
 .mode-ctl button,.seg-ctl button,.vctl button,.grade button{border-radius:999px}
 .tabbar button[aria-current="page"]{background:linear-gradient(180deg,color-mix(in srgb,var(--azure) 22%,transparent),color-mix(in srgb,var(--azure) 10%,transparent));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--azure) 25%,transparent)}
+/* Ronda de ajustes: botón armado, encabezados de cristal, luces, barras más transparentes */
+.btn.armed,.btn.warn.armed{background:linear-gradient(180deg,color-mix(in srgb,var(--eosin) 68%,#fff),var(--eosin));border-color:var(--eosin);color:#fff}
+.topbar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 6px);margin:8px 0 12px;padding:10px 10px 10px 16px;border-radius:22px;
+  background:linear-gradient(180deg,var(--sheen),transparent 60%),var(--glass-bg);
+  -webkit-backdrop-filter:blur(24px) saturate(200%);backdrop-filter:blur(24px) saturate(200%);
+  border:1px solid var(--glass-line);box-shadow:inset 0 0 0 1px var(--glass-edge),inset 0 1px 0 var(--glass-hi),0 12px 28px -16px var(--glass-shadow)}
+.topbar h1{font-size:22px;letter-spacing:-.01em}
+.bgfx{overflow:hidden}
+.lz{position:absolute;display:block;pointer-events:none;border-radius:2px;opacity:.9;
+  animation:var(--d) linear var(--w) infinite;filter:drop-shadow(0 0 4px color-mix(in srgb,var(--azure) 70%,#fff))}
+.lz.h{left:0;top:calc(var(--y) * 22px - .5px);width:90px;height:2px;
+  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--azure) 55%,#fff),#fff,transparent);animation-name:lzx}
+.lz.v{top:0;left:calc(var(--x) * 22px - .5px);width:2px;height:90px;
+  background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--azure) 55%,#fff),#fff,transparent);animation-name:lzy}
+.lz.r{animation-direction:reverse}
+@keyframes lzx{from{transform:translateX(-120px)}to{transform:translateX(calc(100vw + 120px))}}
+@keyframes lzy{from{transform:translateY(-120px)}to{transform:translateY(calc(100vh + 120px))}}
+@media (prefers-reduced-motion:reduce){.lz{display:none}}
+.tabbar,.mode-ctl{background:linear-gradient(180deg,rgba(255,255,255,.26),rgba(255,255,255,.04) 60%),rgba(250,251,255,.14);
+  -webkit-backdrop-filter:blur(26px) saturate(210%) brightness(1.06);backdrop-filter:blur(26px) saturate(210%) brightness(1.06)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tabbar,:root:not([data-theme="light"]) .mode-ctl{background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.02) 60%),rgba(36,34,56,.24)}}
+:root[data-theme="dark"] .tabbar,:root[data-theme="dark"] .mode-ctl{background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.02) 60%),rgba(36,34,56,.24)}
+.tabbar button[aria-current="page"]{color:var(--azure);background:rgba(255,255,255,.42);box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),0 3px 10px -6px var(--glass-shadow)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tabbar button[aria-current="page"]{background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}}
+.tabbar,.mode-ctl{touch-action:none;user-select:none;-webkit-user-select:none}
+.tabbar button.scrub,.mode-ctl button.scrub{transform:scale(1.08);color:var(--azure);background:rgba(255,255,255,.35);transition:transform .12s}
+/* Barras de navegación: cristal casi transparente y píldora fluida */
+.tabbar,.mode-ctl{background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.02) 65%),rgba(255,255,255,.05);
+  -webkit-backdrop-filter:blur(13px) saturate(190%) brightness(1.05);backdrop-filter:blur(13px) saturate(190%) brightness(1.05);
+  border:1px solid rgba(255,255,255,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.75),inset 0 -1px 0 rgba(255,255,255,.12),0 10px 26px -14px var(--glass-shadow)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tabbar,:root:not([data-theme="light"]) .mode-ctl{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.01) 65%),rgba(25,22,40,.12);border-color:rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 10px 26px -14px rgba(0,0,0,.6)}}
+:root[data-theme="dark"] .tabbar,:root[data-theme="dark"] .mode-ctl{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.01) 65%),rgba(25,22,40,.12);border-color:rgba(255,255,255,.14)}
+.mode-ctl{position:relative;isolation:isolate}
+.tabbar{isolation:isolate}
+.thumb{position:absolute;left:0;top:5px;bottom:5px;width:0;z-index:0;pointer-events:none;border-radius:20px;
+  background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.22));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.8),inset 0 1px 0 #fff,0 6px 16px -8px var(--glass-shadow);
+  -webkit-backdrop-filter:blur(4px) saturate(180%);backdrop-filter:blur(4px) saturate(180%);
+  transition:transform .55s cubic-bezier(.22,1.35,.36,1),width .55s cubic-bezier(.22,1.35,.36,1),opacity .2s;will-change:transform,width}
+.mode-ctl .thumb{top:3px;bottom:3px;border-radius:999px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .thumb{background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.07));box-shadow:inset 0 0 0 1px rgba(255,255,255,.22),inset 0 1px 0 rgba(255,255,255,.3),0 6px 16px -8px rgba(0,0,0,.6)}}
+.dragging .thumb{transition:width .18s ease;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,.12))}
+.noanim .thumb{transition:none!important}
+.tabbar button,.mode-ctl button{position:relative;z-index:1;transition:color .25s}
+.tabbar button[aria-current="page"],.mode-ctl button[aria-pressed="true"]{background:transparent!important;box-shadow:none!important;color:var(--azure)}
+.tabbar button.scrub,.mode-ctl button.scrub{transform:none;background:transparent;color:var(--azure)}
+@media (prefers-reduced-motion:reduce){.thumb{transition:opacity .2s}}
 /* Brillo único por célula al tocar */
 .cell .ripple{position:absolute;border-radius:50%;pointer-events:none;z-index:0;
   background:radial-gradient(circle,color-mix(in srgb,var(--g) 75%,transparent) 0%,color-mix(in srgb,var(--g) 32%,transparent) 38%,transparent 68%)}
@@ -465,7 +512,14 @@ body.v-mech.counting .bgfx{display:none}
 </style>
 </head>
 <body class="counting">
-<div class="bgfx" aria-hidden="true"></div>
+<div class="bgfx" aria-hidden="true">
+  <i class="lz h" style="--y:7;--d:19s;--w:0s"></i>
+  <i class="lz h r" style="--y:21;--d:24s;--w:-9s"></i>
+  <i class="lz h" style="--y:33;--d:28s;--w:-17s"></i>
+  <i class="lz v" style="--x:4;--d:21s;--w:-5s"></i>
+  <i class="lz v r" style="--x:11;--d:26s;--w:-14s"></i>
+  <i class="lz v" style="--x:15;--d:31s;--w:-22s"></i>
+</div>
 
 <!-- Conteo -->
 <section class="view" id="v-count" aria-label="Conteo">
@@ -1397,7 +1451,7 @@ $("tabbar").addEventListener("click",e=>{const b=e.target.closest("button[data-t
 $("paraChg").addEventListener("click",()=>{location.hash="resultado";setTimeout(()=>{$("especie").focus();},150);});
 /* Modos de la pantalla de conteo */
 let MODE="conteo";
-function setMode(m){MODE=m;$("v-count").dataset.mode=m;document.querySelectorAll(".mode-ctl button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mode===m)));}
+function setMode(m){MODE=m;if(typeof modePlace==="function")setTimeout(modePlace,0);$("v-count").dataset.mode=m;document.querySelectorAll(".mode-ctl button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mode===m)));}
 document.querySelector(".mode-ctl").addEventListener("click",e=>{const b=e.target.closest("button[data-mode]");if(b)setMode(b.dataset.mode);});
 setMode("conteo");
 $("saveH").addEventListener("click",()=>{const ok=archive();$("copymsg").textContent=ok?"Guardado en historial.":(hasData()?"No se pudo guardar.":"No hay datos que guardar.");renderHist();});
@@ -1773,6 +1827,53 @@ $("impFile").addEventListener("change",async e=>{
   }catch(err){$("bkmsg").textContent="El archivo no es un respaldo válido del contador.";}
   e.target.value="";
 });
+
+/* Deslizar el dedo sobre la barra de pestañas y el selector de modos */
+function scrubBar(bar,sel,pick){
+  let active=false,moved=false,startX=0,last=null;
+  const btnAt=x=>[...bar.querySelectorAll(sel)].find(b=>{if(b.hidden)return false;const r=b.getBoundingClientRect();return x>=r.left&&x<=r.right;});
+  bar.addEventListener("pointerdown",e=>{delete bar.dataset.skip;active=true;moved=false;startX=e.clientX;last=null;});
+  bar.addEventListener("pointermove",e=>{
+    if(!active)return;
+    if(!moved&&Math.abs(e.clientX-startX)<8)return;
+    if(!moved){moved=true;bar.classList.add("dragging");try{bar.setPointerCapture(e.pointerId);}catch(_){}}
+    const b=btnAt(e.clientX);
+    if(b&&b!==last){bar.querySelectorAll(sel).forEach(x=>x.classList.toggle("scrub",x===b));last=b;buzz(6);}
+    const th=bar.querySelector(".thumb");
+    if(th&&last){
+      const r=bar.getBoundingClientRect(),w=last.offsetWidth,pad=last.offsetLeft>0?Math.min(...[...bar.querySelectorAll(sel)].map(x=>x.offsetLeft)):0;
+      const tx=Math.max(pad,Math.min(r.width-w-pad,e.clientX-r.left-w/2));
+      th.style.width=w+"px";th.style.transform=`translateX(${tx}px) scale(1.07)`;
+    }
+  });
+  const end=e=>{
+    if(!active)return;active=false;bar.classList.remove("dragging");
+    bar.querySelectorAll(sel).forEach(x=>x.classList.remove("scrub"));
+    if(moved&&last){bar.dataset.skip="1";pick(last);setTimeout(()=>{delete bar.dataset.skip;},350);}
+    else if(moved&&bar._place)bar._place();
+  };
+  bar.addEventListener("pointerup",end);bar.addEventListener("pointercancel",end);
+  bar.addEventListener("click",e=>{if(bar.dataset.skip){e.stopImmediatePropagation();e.preventDefault();}},true);
+}
+/* Píldora que se desliza con resorte entre opciones */
+function makeThumb(bar,sel,isActive){
+  const th=document.createElement("span");th.className="thumb";th.setAttribute("aria-hidden","true");bar.prepend(th);
+  const place=()=>{
+    const b=[...bar.querySelectorAll(sel)].find(isActive);
+    if(!b){th.style.opacity=0;return;}
+    th.style.opacity=1;th.style.width=b.offsetWidth+"px";th.style.transform=`translateX(${b.offsetLeft}px)`;
+  };
+  bar._place=place;
+  bar.classList.add("noanim");place();requestAnimationFrame(()=>requestAnimationFrame(()=>bar.classList.remove("noanim")));
+  if(window.ResizeObserver)new ResizeObserver(()=>{bar.classList.add("noanim");place();requestAnimationFrame(()=>bar.classList.remove("noanim"));}).observe(bar);
+  return place;
+}
+var tabPlace=makeThumb($("tabbar"),"button[data-tab]",b=>b.getAttribute("aria-current")==="page");
+var modePlace=makeThumb(document.querySelector(".mode-ctl"),"button[data-mode]",b=>b.getAttribute("aria-pressed")==="true");
+window.addEventListener("hashchange",()=>setTimeout(tabPlace,0));
+window.addEventListener("load",()=>{tabPlace();modePlace();});
+scrubBar($("tabbar"),"button[data-tab]",b=>{location.hash=b.dataset.tab;});
+scrubBar(document.querySelector(".mode-ctl"),"button[data-mode]",b=>setMode(b.dataset.mode));
 
 /* App sin conexión (solo en GitHub Pages) */
 if("serviceWorker" in navigator&&/github\.io$/.test(location.hostname)){
