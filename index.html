@@ -629,6 +629,34 @@ body.v-cells .cell .art{filter:none}
 @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.22)}100%{transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){.big.pop{animation:none}}
 @media (prefers-reduced-motion:reduce){.cell.flash{animation:none}.bar i{transition:none}}
+
+/* Modo oscuro elegido en Ajustes (aunque el sistema esté en claro) */
+
+  :root[data-theme="dark"]{
+    --bg:#15121F; --surface:#1F1B2C; --ink:#EEEAF6; --muted:#A39DB8; --line:#332D45;
+    --azure:#A99CF2; --eosin:#F2759A; --ok:#5CC596;
+    --c-seg:#A897E6; --c-band:#8F7BDA; --c-lym:#8C89F0; --c-mono:#A3AAD6;
+    --c-eos:#F2759A; --c-baso:#B58AE6; --c-otras:#B0A9C2; --c-nrbc:#E46A87;
+    --tint:.16; color-scheme:dark;
+  }
+
+:root[data-theme="dark"]{--glass-bg:rgba(44,38,66,.46);--glass-edge:rgba(255,255,255,.16);--glass-hi:rgba(255,255,255,.12);--glass-shadow:rgba(0,0,0,.45)}
+:root[data-theme="dark"] body.v-cells{--glow-o:.85}
+:root[data-theme="dark"] body.v-mech.counting{background:radial-gradient(120% 80% at 50% 0%,#3A352D,#1A1815)}
+:root[data-theme="dark"]{--glass-bg:rgba(46,44,70,.46);--glass-edge:rgba(255,255,255,.2);--glass-line:rgba(0,0,0,.45);--glass-hi:rgba(255,255,255,.2);--glass-shadow:rgba(0,0,0,.6);--sheen:rgba(255,255,255,.12)}
+:root[data-theme="dark"] .tabbar,:root[data-theme="dark"] .mode-ctl{background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.02) 60%),rgba(36,34,56,.24)}
+:root[data-theme="dark"] .tabbar button[aria-current="page"]{background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+:root[data-theme="dark"] .tabbar,:root[data-theme="dark"] .mode-ctl{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.01) 65%),rgba(25,22,40,.12);border-color:rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 10px 26px -14px rgba(0,0,0,.6)}
+:root[data-theme="dark"] .thumb{background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.07));box-shadow:inset 0 0 0 1px rgba(255,255,255,.22),inset 0 1px 0 rgba(255,255,255,.3),0 6px 16px -8px rgba(0,0,0,.6)}
+:root[data-theme="dark"]{--bg:#111216;--azure:#F1F2F6;--line:#2C2F37;--muted:#9EA3AE;--glass-shadow:rgba(0,0,0,.6);--glass-bg:rgba(40,42,50,.42);--glass-line:rgba(0,0,0,.5)}
+:root[data-theme="dark"] .bgfx{background:
+  linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px) 0 0/22px 22px,
+  linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px) 0 0/22px 22px,
+  radial-gradient(55% 38% at 8% 4%,rgba(90,110,140,.35),transparent 70%),
+  radial-gradient(50% 32% at 90% 97%,rgba(120,120,135,.3),transparent 70%)}
+:root[data-theme="dark"] .bar i{background:linear-gradient(90deg,rgba(255,255,255,.55),#fff)}
+:root[data-theme="dark"] .gthumb{background:linear-gradient(180deg,rgba(255,255,255,.3),rgba(255,255,255,.06)),rgba(255,255,255,.14)}
+:root[data-theme="dark"] .head .seg-ctl button[aria-pressed="true"]{color:#14161c!important}
 </style>
 </head>
 <body class="counting">
@@ -776,6 +804,9 @@ body.v-cells .cell .art{filter:none}
       <h1>Ajustes</h1>
       <button class="btn primary" id="setBack" type="button">Listo</button>
     </div>
+    <h2>Apariencia</h2>
+    <div class="setrow"><div><strong>Modo</strong><span>Sistema sigue el modo claro u oscuro del iPhone.</span></div><div class="vctl" id="setTheme" role="group" aria-label="Apariencia"><button type="button" data-v="auto">Sistema</button><button type="button" data-v="light">Claro</button><button type="button" data-v="dark">Oscuro</button></div></div>
+
     <h2>Sonido y vibración</h2>
     <div class="setrow"><div><strong>Sonidos</strong><span>Notas al contar y aviso al completar.</span></div><button class="switch" type="button" role="switch" data-set="sound"></button></div>
     <div class="setrow"><div><strong>Sonar en modo silencio</strong><span>Suena aunque el iPhone esté en silencio, pero iOS muestra la isla dinámica. Apagado: respeta el silencio y no aparece.</span></div><button class="switch" type="button" role="switch" data-set="silent"></button></div>
@@ -852,7 +883,10 @@ const MORPH=[
   {k:"toxic",n:"Toxicidad neutrofílica",t:"toxicidad neutrofílica",l:GF,s:"basofilia, vacuolas, cuerpos de Döhle"},
   {k:"reactivos",n:"Linfocitos reactivos",t:"linfocitos reactivos",l:CM,s:"citoplasma azul intenso"},
   {k:"atipicas",n:"Células atípicas",t:"células atípicas",l:CF,s:"posibles blastos o células neoplásicas"},
-  {k:"hiperseg",n:"Neutrófilos hipersegmentados",t:"neutrófilos hipersegmentados",l:CM,s:"más de 5 lóbulos"}]},
+  {k:"hiperseg",n:"Neutrófilos hipersegmentados",t:"neutrófilos hipersegmentados",l:CM,s:"más de 5 lóbulos"},
+  {k:"displas",n:"Neutrófilos con núcleo displásico",t:"neutrófilos con núcleo displásico",l:CM,s:"lobulación o cromatina anormales"},
+  {k:"dona",n:"Neutrófilos con núcleo en dona",t:"neutrófilos con núcleo en dona",l:CM,s:"núcleo en anillo"},
+  {k:"eosreac",n:"Eosinófilos reactivos",t:"eosinófilos reactivos",l:CM,s:"vacuolados o con desgranulación"}]},
  {g:"Plaquetas",label:"Plaquetas",items:[
   {k:"pltest",n:"Estimación en el frotis",type:"est",s:"cantidad aparente"},
   {k:"agreg",n:"Agregados plaquetarios",t:"agregados plaquetarios",l:CM,s:"pueden subestimar el conteo"},
@@ -883,8 +917,13 @@ const KEY="contador-diferencial-v1";
 
 /* Ajustes guardados */
 const SPECIES=["Canino","Felino","Humano"];
-let AJ={sound:true,silent:false,vib:true,meta:100,especie:"Canino",units:"si"};
+let AJ={sound:true,silent:false,vib:true,meta:100,especie:"Canino",units:"si",theme:"auto"};
 try{AJ=Object.assign(AJ,JSON.parse(localStorage.getItem("contador-ajustes")||"{}"));}catch(e){}
+function applyTheme(){
+  const r=document.documentElement;
+  if(AJ.theme==="light"||AJ.theme==="dark")r.setAttribute("data-theme",AJ.theme);else r.removeAttribute("data-theme");
+}
+applyTheme();
 function saveAJ(){try{localStorage.setItem("contador-ajustes",JSON.stringify(AJ));}catch(e){}}
 const absU=()=>AJ.units==="ul"?"×10³/µL":"×10⁹/L";
 function absStr(x,dec=2){if(!Number.isFinite(x))return "—";return AJ.units==="ul"?x.toFixed(1)+" ×10³/µL":x.toFixed(dec)+" ×10⁹/L";}
@@ -1219,6 +1258,9 @@ elipto:S(`<ellipse cx="14" cy="20" rx="6" ry="12" fill="${RB}" stroke="${RBs}" s
 retiAgg:S(rbc(20,20,14,{np:1,f:"#E9B5AD"})+`<path d="M12 15 L16 18 L14 22 M18 12 L19 17 L23 19 L27 16 M21 23 L25 26 L22 29 M16 25 L19 27 M26 21 L29 23" stroke="#2F5FB3" stroke-width="1.4" fill="none" stroke-linecap="round"/>`+dots([[16,18],[23,19],[25,26],[14,22],[19,27]],1.2,"#2F5FB3")),
 retiPunt:S(rbc(20,20,14,{np:1,f:"#E9B5AD"})+dots([[14,16],[22,13],[27,20],[18,24],[24,27],[13,25]],1.3,"#3B6CC0")),
 rbcMat:S(rbc(20,20,14)),
+displas:S(`<circle cx="20" cy="20" r="14" fill="#F3E4EC" stroke="#CFA9BE" stroke-width=".8"/><path d="M10.5 17 C10 11 17.5 9.5 20 13.5 C21.5 16.5 18 20 14.5 22.5 C11.5 24.5 10.8 21 10.5 17Z" fill="${NU}"/><path d="M16.5 20 L25 24.5" stroke="${NU}" stroke-width="1"/><circle cx="26.5" cy="25" r="4" fill="${NU}"/><circle cx="27" cy="13" r="1.7" fill="${NU}"/>`),
+dona:S(`<circle cx="20" cy="20" r="14" fill="#F3E4EC" stroke="#CFA9BE" stroke-width=".8"/><circle cx="20" cy="20" r="7.2" fill="none" stroke="${NU}" stroke-width="4.4"/>`),
+eosreac:S(`<circle cx="20" cy="20" r="14" fill="#DDE1EE" stroke="#ADB0D0" stroke-width=".8"/>`+dots([[11,14],[14,27],[27,28],[29,15],[22,31],[9,21],[31,22],[17,9],[25,8]],1.5,"#E2733F")+`<circle cx="16" cy="18" r="2.4" fill="#F7F7FC" stroke="#9BA0C6" stroke-width=".5"/><circle cx="25" cy="23" r="1.9" fill="#F7F7FC" stroke="#9BA0C6" stroke-width=".5"/><circle cx="14" cy="22" r="4" fill="${NU}" opacity=".95"/><circle cx="25" cy="16" r="4" fill="${NU}" opacity=".95"/><path d="M14 22 Q19 17 25 16" stroke="${NU}" stroke-width="1.6" fill="none"/>`),
 "Otro hemoparásito":S(rbc(20,20,13)+`<text x="20" y="25" text-anchor="middle" font-size="14" font-weight="700" fill="${NU}" font-family="system-ui,sans-serif">?</text>`)
 };
 return I;})();
@@ -1995,6 +2037,7 @@ function renderAJ(){
   document.querySelectorAll("#setMeta button").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.v===AJ.meta)));
   document.querySelectorAll("#setEsp button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===AJ.especie)));
   document.querySelectorAll("#setUnits button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===AJ.units)));
+  document.querySelectorAll("#setTheme button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===(AJ.theme||"auto"))));
 }
 document.querySelectorAll(".switch[data-set]").forEach(s=>s.addEventListener("click",()=>{
   const k=s.dataset.set;AJ[k]=!AJ[k];saveAJ();renderAJ();
@@ -2004,6 +2047,7 @@ document.querySelectorAll(".switch[data-set]").forEach(s=>s.addEventListener("cl
 }));
 $("setMeta").addEventListener("click",e=>{const b=e.target.closest("button[data-v]");if(!b)return;AJ.meta=+b.dataset.v;saveAJ();renderAJ();});
 $("setEsp").addEventListener("click",e=>{const b=e.target.closest("button[data-v]");if(!b)return;AJ.especie=b.dataset.v;saveAJ();renderAJ();});
+$("setTheme").addEventListener("click",e=>{const b=e.target.closest("button[data-v]");if(!b)return;AJ.theme=b.dataset.v;saveAJ();applyTheme();renderAJ();});
 $("setUnits").addEventListener("click",e=>{const b=e.target.closest("button[data-v]");if(!b)return;AJ.units=b.dataset.v;saveAJ();renderAJ();render();});
 {const row=$("setUnits").closest(".setrow"),slot=$("unitsRow");slot.replaceWith(row);}
 renderAJ();
